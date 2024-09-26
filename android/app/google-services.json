@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:889022882849:android:9e79d036e2d34b6f2e2f60",
         "android_client_info": {
-          "package_name": "ph.projectthing.commerce"
+          "package_name": "com.example.commerce_mobile"
         }
       },
       "oauth_client": [],
