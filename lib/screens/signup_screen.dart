@@ -3,16 +3,15 @@ import 'package:commerce_mobile/compontents/passwordfields.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({
-    super.key,
-  });
+class SignupScreen extends StatefulWidget {
+  const SignupScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<SignupScreen> createState() => _SignupScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SignupScreenState extends State<SignupScreen> {
+  TextEditingController nameTextField = TextEditingController();
   TextEditingController emailTextField = TextEditingController();
   TextEditingController passwordTextField = TextEditingController();
 
@@ -28,7 +27,7 @@ class _LoginScreenState extends State<LoginScreen> {
           children: [
             const SizedBox(height: 100),
             Text(
-              'Log in',
+              'Sign Up',
               style: GoogleFonts.inter(
                 fontSize: 48,
                 fontWeight: FontWeight.bold,
@@ -43,8 +42,13 @@ class _LoginScreenState extends State<LoginScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   InputFields(
+                      label: 'Name',
+                      hintText: 'Write your name',
+                      controllerTextField: nameTextField),
+                  const SizedBox(height: 35),
+                  InputFields(
                       label: 'Email',
-                      hintText: 'Email',
+                      hintText: 'johndoe@gmail.com',
                       controllerTextField: emailTextField),
                   const SizedBox(height: 35),
                   Text(
@@ -61,23 +65,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       hintText: 'Password',
                       controllerTextField: passwordTextField),
                   const SizedBox(height: 10),
-                  Row(
-                    children: [
-                      const Spacer(),
-                      InkWell(
-                        onTap: () {
-                          setState(() {});
-                        },
-                        child: Text(
-                          'Forgot Password?',
-                          style: GoogleFonts.inter(
-                            fontSize: 15,
-                            color: const Color(0xFFA259FF),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
                 ],
               ),
             ),
@@ -107,50 +94,38 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
             ),
-            const SizedBox(height: 35),
+            const SizedBox(height: 50),
             Center(
-              child: Text(
-                "Don't have an account yet?",
-                style: GoogleFonts.inter(
-                  fontSize: 15,
-                  color: const Color.fromARGB(255, 140, 140, 140),
-                  letterSpacing: -0.5,
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 30),
+                child: Row(
+                  children: [
+                    Text(
+                      'Already have an account?',
+                      style: GoogleFonts.inter(
+                        fontSize: 15,
+                        color: const Color.fromARGB(255, 140, 140, 140),
+                        letterSpacing: -0.5,
+                      ),
+                    ),
+                    const Spacer(),
+                    InkWell(
+                      onTap: () {
+                        Navigator.pushNamed(context, '/login');
+                        setState(() {});
+                      },
+                      child: Text(
+                        'Log in',
+                        style: GoogleFonts.inter(
+                          fontSize: 15,
+                          color: const Color(0xFFA259FF),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(35.0),
-              child: Center(
-                child: ElevatedButton.icon(
-                  onPressed: () {
-                    // Google sign-in logic diri
-
-                    Navigator.pushNamed(context, '/signup');
-                  },
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.purple,
-                    backgroundColor: Colors.white,
-                    minimumSize: const Size.fromHeight(60),
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.0),
-                      side: const BorderSide(
-                          color: Color.fromARGB(255, 228, 228, 228),
-                          width: 1.5),
-                    ),
-                  ),
-                  label: Text(
-                    'SIGNUP',
-                    style: GoogleFonts.inter(
-                      fontSize: 16,
-                      letterSpacing: -0.5,
-                      fontWeight: FontWeight.w500,
-                      color: const Color.fromARGB(255, 99, 99, 99),
-                    ),
-                  ),
-                ),
-              ),
-            )
           ],
         ),
       ),
