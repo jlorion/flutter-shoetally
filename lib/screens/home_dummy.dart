@@ -1,3 +1,4 @@
+import 'package:commerce_mobile/services/authentication.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreenWidget extends StatelessWidget {
@@ -7,8 +8,9 @@ class HomeScreenWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: ElevatedButton(onPressed: () {
-          
+        child: ElevatedButton(onPressed: ()async {
+          //functions
+          await AuthenticationService().signOut();
         }, child: const Text('SignOut')),
       ),
     );

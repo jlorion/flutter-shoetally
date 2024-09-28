@@ -41,12 +41,12 @@ class AuthenticationService {
   ) async {
     try {
       UserCredential userCredential =
-          await _auth.createUserWithEmailAndPassword(
+          await _auth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
       User? user = userCredential.user;
-      return connectToAuthUser(user);
+      return connectToAuthUser(user!);
     } on Exception catch (e) {
       print('Error : $e');
     }

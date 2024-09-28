@@ -1,5 +1,6 @@
 import 'package:commerce_mobile/compontents/inputfields.dart';
 import 'package:commerce_mobile/compontents/passwordfields.dart';
+import 'package:commerce_mobile/services/authentication.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -68,8 +69,14 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(height: 50),
               Center(
                 child: ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     // Handle login logic here
+                    try {
+                      await AuthenticationService().loginUser(
+                          emailTextField.text, passwordTextField.text);
+                    } on Exception catch (e) {
+                      print('Error: $e');
+                    }
                   },
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,
