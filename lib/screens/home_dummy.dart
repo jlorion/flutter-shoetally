@@ -1,4 +1,4 @@
-import 'package:commerce_mobile/services/authentication.dart';
+import 'package:commerce_mobile/services/authentication/authentication.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreenWidget extends StatelessWidget {
