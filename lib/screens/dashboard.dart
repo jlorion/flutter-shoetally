@@ -2,7 +2,6 @@
 import 'package:commerce_mobile/compontents/app_drawer.dart';
 import 'package:commerce_mobile/compontents/transaction_item.dart';
 import 'package:commerce_mobile/compontents/app_drawer.dart';
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -26,6 +25,7 @@ class _DashboardState extends State<Dashboard> {
       'dateTime': 'September 29, 2024, 5:00 PM'
     },
     {
+
       'title': 'Kyle Dellatan',
       'price': '₱ 25,000.00',
       'dateTime': 'September 29, 2024, 5:00 PM'
@@ -41,6 +41,7 @@ class _DashboardState extends State<Dashboard> {
       'dateTime': 'September 29, 2024, 5:00 PM'
     },
   ];
+
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
@@ -66,6 +67,7 @@ class _DashboardState extends State<Dashboard> {
         leading: IconButton(
           icon: const Icon(Icons.menu),
           onPressed: () {
+
             _scaffoldKey.currentState
                 ?.openDrawer(); // Open the drawer using the GlobalKey
           },
@@ -75,6 +77,7 @@ class _DashboardState extends State<Dashboard> {
 
       body: Padding(
         padding: const EdgeInsets.fromLTRB(35, 35, 35, 5),
+
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
