@@ -1,5 +1,8 @@
 
 import 'package:commerce_mobile/compontents/app_drawer.dart';
+import 'package:commerce_mobile/compontents/transaction_item.dart';
+import 'package:commerce_mobile/compontents/app_drawer.dart';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -23,7 +26,6 @@ class _DashboardState extends State<Dashboard> {
       'dateTime': 'September 29, 2024, 5:00 PM'
     },
     {
-
       'title': 'Kyle Dellatan',
       'price': '₱ 25,000.00',
       'dateTime': 'September 29, 2024, 5:00 PM'
@@ -39,7 +41,6 @@ class _DashboardState extends State<Dashboard> {
       'dateTime': 'September 29, 2024, 5:00 PM'
     },
   ];
-
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
@@ -103,12 +104,12 @@ class _DashboardState extends State<Dashboard> {
             const SizedBox(height: 8),
             // Transactions List
             Expanded(
-
               child: ListView.builder(
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: _transactions.length > 3 ? 3 : _transactions.length,
                 itemBuilder: (context, index) {
-                  return _transactionItem(
+
+                  return TransactionItemComponent.transactionItem(
                     _transactions[index]['title']!,
                     _transactions[index]['price']!,
                     _transactions[index]['dateTime']!,
@@ -254,4 +255,5 @@ class _DashboardState extends State<Dashboard> {
       ],
     );
   }
+
 }

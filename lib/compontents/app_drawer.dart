@@ -78,7 +78,8 @@ class AppDrawer extends StatelessWidget {
             leading: const Icon(Icons.history),
             title: const Text('Transaction History'),
             onTap: () {
-              // transaction history icon tap
+              Navigator.pushNamed(context, '/transaction_history');
+
             },
           ),
           ListTile(
