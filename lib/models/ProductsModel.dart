@@ -4,8 +4,8 @@ class Product {
   final double selling_price;
   final int total_purchase;
   final int product_stock;
-  final String gender;
   final String category;
+  final String image;
 
   Product(
       {required this.id,
@@ -13,8 +13,8 @@ class Product {
       required this.selling_price,
       required this.total_purchase,
       required this.product_stock,
-      required this.gender,
-      required this.category});
+      required this.category, 
+      required this.image});
 
   factory Product.fromFireStore(Map<String, dynamic> data, String userDoc) {
     return Product(
@@ -23,8 +23,8 @@ class Product {
         selling_price: data['selling_price'],
         total_purchase: data['total_purchase'],
         product_stock: data['product_stock'],
-        gender: data['gender'],
-        category: data['category']);
+        category: data['category'],
+        image: data['image']);
   }
 
   Map<String, dynamic> toJson(){
@@ -34,8 +34,8 @@ class Product {
       'selling_price': selling_price,
       'total_purchase': total_purchase,
       'product_stock': product_stock,
-      'gender': gender,
-      'category': category
+      'category': category,
+      'image': image
     };
   }
 }

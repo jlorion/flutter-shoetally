@@ -21,6 +21,7 @@ class _SignupScreenState extends State<SignupScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+
       body: Center(
         child: Container(
           padding: const EdgeInsetsDirectional.symmetric(
@@ -95,47 +96,106 @@ class _SignupScreenState extends State<SignupScreen> {
                   child: Text(
                     'LOGIN',
                     style: GoogleFonts.inter(
-                      fontSize: 16,
-                      letterSpacing: -0.2,
+                      fontSize: 48,
                       fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                      color: const Color(0xFF6C3AAC),
+                      letterSpacing: -3,
                     ),
                   ),
-                ),
-              ),
-              const SizedBox(height: 50),
-              Center(
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 30),
-                  child: Row(
-                    children: [
-                      Text(
-                        'Already have an account?',
-                        style: GoogleFonts.inter(
-                          fontSize: 15,
-                          color: const Color.fromARGB(255, 140, 140, 140),
-                          letterSpacing: -0.5,
-                        ),
-                      ),
-                      const Spacer(),
-                      InkWell(
-                        onTap: () {
-                          Navigator.pushNamed(context, '/login');
-                          setState(() {});
-                        },
-                        child: Text(
-                          'Log in',
+                  const SizedBox(height: 50),
+                  Padding(
+                    padding: const EdgeInsets.all(0.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        InputFields(
+                            label: 'Name',
+                            hintText: 'Write your name',
+                            controllerTextField: nameTextField),
+                        const SizedBox(height: 35),
+                        InputFields(
+                            label: 'Email',
+                            hintText: 'johndoe@gmail.com',
+                            controllerTextField: emailTextField),
+                        const SizedBox(height: 35),
+                        Text(
+                          'Password',
                           style: GoogleFonts.inter(
                             fontSize: 15,
-                            color: const Color(0xFFA259FF),
+                            fontWeight: FontWeight.w600,
+                            color: const Color(0xFF766789),
                           ),
                         ),
-                      ),
-                    ],
+                        const SizedBox(height: 3),
+                        PasswordFields(
+                            passlabel: 'Password',
+                            hintText: 'Password',
+                            controllerTextField: passwordTextField),
+                        const SizedBox(height: 10),
+                      ],
+                    ),
                   ),
-                ),
+                  const SizedBox(height: 50),
+                  Center(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        // Handle login logic here
+                      },
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        backgroundColor: const Color(0xFFA259FF),
+                        minimumSize: const Size.fromHeight(60),
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                      ),
+                      child: Text(
+                        'LOGIN',
+                        style: GoogleFonts.inter(
+                          fontSize: 16,
+                          letterSpacing: -0.2,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 50),
+                  Center(
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 30),
+                      child: Row(
+                        children: [
+                          Text(
+                            'Already have an account?',
+                            style: GoogleFonts.inter(
+                              fontSize: 15,
+                              color: const Color.fromARGB(255, 140, 140, 140),
+                              letterSpacing: -0.5,
+                            ),
+                          ),
+                          const Spacer(),
+                          InkWell(
+                            onTap: () {
+                              Navigator.pushNamed(context, '/login');
+                              setState(() {});
+                            },
+                            child: Text(
+                              'Log in',
+                              style: GoogleFonts.inter(
+                                fontSize: 15,
+                                color: const Color(0xFFA259FF),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),

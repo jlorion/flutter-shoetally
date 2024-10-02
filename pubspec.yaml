@@ -16,6 +16,9 @@ dependencies:
   firebase_auth: ^5.3.0
   cloud_firestore: ^5.4.2
   intl: ^0.19.0
+  firebase_storage: ^12.3.2
+  provider: ^6.1.2
+  image_picker: ^1.1.2
   lottie: ^2.3.2
   animated_splash_screen:
   provider: ^6.1.2

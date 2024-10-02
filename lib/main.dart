@@ -1,6 +1,8 @@
+
 import 'package:commerce_mobile/Wrapper.dart';
 import 'package:commerce_mobile/firebase_options.dart';
 import 'package:commerce_mobile/models/AuthUser.dart';
+import 'package:commerce_mobile/screens/dashboard.dart';
 import 'package:commerce_mobile/screens/login_screen.dart';
 import 'package:commerce_mobile/screens/signup_screen.dart';
 import 'package:commerce_mobile/services/authentication/authentication.dart';
@@ -8,6 +10,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+
+//auth integration 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -27,4 +31,20 @@ void main() async{
           }),
     ),
   );
+
+//uncomment for ui testing or something
+//void main() => runApp(ShoeTallyApp());
+class ShoeTallyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+        home: SplashScreen(),
+        debugShowCheckedModeBanner: false,
+        routes: {
+          '/login': (context) => const LoginScreen(),
+          '/signup': (context) => const SignupScreen(),
+          '/dashboard': (context) => Dashboard(),
+        });
+  }
+
 }

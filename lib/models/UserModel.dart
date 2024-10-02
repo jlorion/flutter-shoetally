@@ -1,10 +1,13 @@
 
+import 'dart:convert';
+
 class Users {
   final String id;
   final String last_name;
   final String email;
   final String first_name;
   bool isVerified;
+  
 
   Users(
       {required this.id,
@@ -20,6 +23,14 @@ class Users {
         email: data["email"],
         first_name: data["first_name"],
         isVerified: data["isVerified"]);
+  }
+
+  List<Users> userSeeder(String json){
+    var jsonObj = jsonDecode(json) as List;
+    List<Users> userList = jsonObj.map((data)=>{
+        Users.fromFireStore(data, data.id)
+    }).cast<Users>().toList();
+    return userList;
   }
 
   Map<String, dynamic> toJson() {
