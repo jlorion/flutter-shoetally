@@ -1,5 +1,7 @@
 import 'package:commerce_mobile/compontents/inputfields.dart';
 import 'package:commerce_mobile/compontents/passwordfields.dart';
+import 'package:commerce_mobile/services/authentication/auth_functions.dart';
+import 'package:commerce_mobile/services/authentication/authentication.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -74,9 +76,15 @@ class _SignupScreenState extends State<SignupScreen> {
                   const SizedBox(height: 50),
                   Center(
                     child: ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         // Handle login logic here
-                      },
+                        String email = emailTextField.text;
+                    String password = passwordTextField.text;
+                    String name = nameTextField.text;
+
+                    await AuthFunctions()
+                        .register(context, email, password, name);
+                  },
                       style: ElevatedButton.styleFrom(
                         foregroundColor: Colors.white,
                         backgroundColor: const Color(0xFFA259FF),
