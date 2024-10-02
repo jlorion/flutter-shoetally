@@ -1,3 +1,4 @@
+import 'package:commerce_mobile/screens/dashboard.dart';
 import 'package:commerce_mobile/Wrapper.dart';
 import 'package:commerce_mobile/firebase_options.dart';
 import 'package:commerce_mobile/models/AuthUser.dart';
