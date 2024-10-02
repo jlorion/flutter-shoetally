@@ -14,7 +14,7 @@ class SplashScreen extends StatelessWidget {
       ),
       nextScreen: LoginScreen(),
       splashTransition: SplashTransition.fadeTransition,
-      duration: 3000,
+      duration: 1500,
       backgroundColor:
           MediaQuery.of(context).platformBrightness == Brightness.dark
               ? Colors.black
