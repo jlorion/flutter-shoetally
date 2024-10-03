@@ -21,7 +21,6 @@ dependencies:
   image_picker: ^1.1.2
   lottie: ^2.3.2
   animated_splash_screen:
-  provider: ^6.1.2
 
 dev_dependencies:
   flutter_test:

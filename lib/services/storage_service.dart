@@ -1,6 +1,5 @@
 
 import 'dart:io';
-
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
@@ -65,30 +64,40 @@ class StorageService with ChangeNotifier{
     return Uri.decodeComponent(encodedPath);
   }
 
-  Future<void> updloadImage(String fileName) async{
+  Future<String> updloadImage(String fileName) async{
     _isUploading = true;
 
     final ImagePicker picker = ImagePicker();
     final XFile? image = await picker.pickImage(source: ImageSource.gallery);
 
-    if (image == null) return;
+    if (image == null) return "error";
 
     File file = File(image.path);
+
+
+    String downloadUrl = "";
 
     try {
       String filePath = 'images/$fileName.png';
       //upload
-      await firebaseStorage.ref(fileName).putFile(file);
 
-      String downloadUrl = await firebaseStorage.ref(filePath).getDownloadURL();
-      _imageUrls.add(downloadUrl);
+      if (kIsWeb) {
+        await firebaseStorage.ref(filePath).putData(await image.readAsBytes(), SettableMetadata(
+          contentType: 'image/png',
+        ));
+      }else{
+        await firebaseStorage.ref(filePath).putFile(file);
+      }
+
+      downloadUrl = await firebaseStorage.ref(filePath).getDownloadURL();
+      _isUploading = false;
+
+      print(downloadUrl);
+      notifyListeners();
     } catch (err) {
       print("upload error: $err");
-    }finally{
-    _isUploading = false;
-    notifyListeners();
     }
-
+    return downloadUrl;
 
   }
 
