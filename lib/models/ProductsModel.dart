@@ -2,7 +2,7 @@ class Product {
   final String id;
   final String name;
   final double selling_price;
-  final int total_purchase;
+  final double total_purchase;
   final int product_stock;
   final String category;
   final String image;
