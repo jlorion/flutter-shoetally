@@ -54,17 +54,10 @@ class AppDrawer extends StatelessWidget {
             ),
           ),
           ListTile(
-            leading: const Icon(Icons.dashboard),
-            title: const Text('Dashboard'),
-            onTap: () {
-              Navigator.pushNamed(context, '/dashboard');
-            },
-          ),
-          ListTile(
             leading: const Icon(Icons.list_alt),
             title: const Text('Products'),
             onTap: () {
-              // products icon tap
+              Navigator.pushNamed(context, '/products');
             },
           ),
           ListTile(
@@ -79,14 +72,13 @@ class AppDrawer extends StatelessWidget {
             title: const Text('Transaction History'),
             onTap: () {
               Navigator.pushNamed(context, '/transaction_history');
-
             },
           ),
           ListTile(
             leading: const Icon(Icons.people),
             title: const Text('Customer List'),
             onTap: () {
-              // customer list tap
+              Navigator.pushNamed(context, '/customer-list');
             },
           ),
         ],

@@ -1,4 +1,8 @@
-import 'package:commerce_mobile/compontents/app_drawer.dart';
+import 'package:commerce_mobile/components/app_drawer.dart';
+import 'package:commerce_mobile/components/appbar.dart';
+import 'package:commerce_mobile/components/navbar.dart';
+import 'package:commerce_mobile/components/search_field_component.dart';
+import 'package:commerce_mobile/components/transaction_item.dart'; // Import the new transaction item component
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -37,16 +41,14 @@ class _TransactionHistoryState extends State<TransactionHistory> {
   @override
   void initState() {
     super.initState();
-    _filteredTransactions =
-        _transactions; // Initialize with full transaction list
+    _filteredTransactions = _transactions;
   }
 
   void _filterTransactions(String searchText) {
     setState(() {
       _searchText = searchText;
       if (_searchText.isEmpty) {
-        _filteredTransactions =
-            _transactions; // Reset to full list if search is empty
+        _filteredTransactions = _transactions;
       } else {
         _filteredTransactions = _transactions
             .where((transaction) => transaction['title']!
@@ -57,54 +59,22 @@ class _TransactionHistoryState extends State<TransactionHistory> {
     });
   }
 
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldKey, // Assign the key to the Scaffold
-      appBar: AppBar(
-        backgroundColor: const Color(0xFFA259FF),
-        foregroundColor: Colors.white,
-        title: Text(
-          "Transaction History",
-          style: GoogleFonts.inter(
-            fontSize: 24,
-            letterSpacing: -0.5,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        leading: IconButton(
-          icon: const Icon(Icons.menu),
-          onPressed: () {
-            _scaffoldKey.currentState
-                ?.openDrawer(); // Open the drawer using the GlobalKey
-          },
-        ),
-      ),
+      appBar: const CustomAppBar(title: "Transaction History"),
       drawer: const AppDrawer(),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: TextField(
-              onChanged: (value) => _filterTransactions(value),
-              decoration: InputDecoration(
-                hintText: 'Search',
-                prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30.0),
-                  borderSide: BorderSide.none,
-                ),
-                filled: true,
-                fillColor: Colors.grey.shade200,
-              ),
-            ),
+          SearchFieldComponent(
+            onChanged: (value) => _filterTransactions(value),
           ),
           Expanded(
             child: ListView.builder(
               physics: const AlwaysScrollableScrollPhysics(),
               itemCount: _filteredTransactions.length,
               itemBuilder: (context, index) {
+                final transaction = _filteredTransactions[index];
                 return Padding(
                   padding: const EdgeInsets.symmetric(
                       vertical: 4.0, horizontal: 16.0),
@@ -120,35 +90,10 @@ class _TransactionHistoryState extends State<TransactionHistory> {
                         ),
                       ],
                     ),
-                    child: Column(
-                      children: [
-                        ListTile(
-                          title: Text(
-                            _filteredTransactions[index]['title']!,
-                            style: GoogleFonts.inter(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: const Color.fromARGB(255, 98, 54, 155),
-                            ),
-                          ),
-                          subtitle: Text(
-                            _filteredTransactions[index]['dateTime']!,
-                            style: GoogleFonts.inter(fontSize: 11),
-                          ),
-                          trailing: Text(
-                            "${_filteredTransactions[index]['price']} / Unit",
-                            style: GoogleFonts.inter(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: const Color.fromARGB(255, 98, 54, 155),
-                            ),
-                          ),
-                        ),
-                        Divider(
-                          color: Colors.grey.shade300,
-                          thickness: 1,
-                        ),
-                      ],
+                    child: TransactionItemComponent.transactionItem(
+                      transaction['title']!,
+                      transaction['price']!,
+                      transaction['dateTime']!,
                     ),
                   ),
                 );
@@ -157,22 +102,8 @@ class _TransactionHistoryState extends State<TransactionHistory> {
           ),
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.dashboard),
-            label: 'Dashboard',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_cart),
-            label: 'Cart',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
-          ),
-        ],
-        selectedItemColor: const Color(0xFFA259FF),
+      bottomNavigationBar: const CustomBottomNavigationBar(
+        currentIndex: 0,
       ),
     );
   }

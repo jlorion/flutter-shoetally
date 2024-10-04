@@ -1,5 +1,5 @@
 class Customers {
-  final String id;
+  String id;
   final String name;
   final String phone_number;
   final String address;
@@ -19,14 +19,12 @@ class Customers {
         address: data['address']);
   }
 
-  Map<String, dynamic> toJson(){
+  Map<String, dynamic> toJson() {
     return {
       'id': id,
       'name': name,
       'phone_number': phone_number,
       'address': address
     };
-
-
   }
 }

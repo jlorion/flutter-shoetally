@@ -38,7 +38,10 @@ class _InputFieldsState extends State<InputFields> {
           keyboardType: TextInputType.emailAddress,
           decoration: InputDecoration(
             hintText: widget.hintText,
-            hintStyle: TextStyle(color: Colors.black45),
+            hintStyle: const TextStyle(
+              color: Colors.black45,
+              fontWeight: FontWeight.w300,
+            ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(7.0),
               borderSide: const BorderSide(
