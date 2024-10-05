@@ -36,6 +36,30 @@ class _OrderScreenState extends State<OrderScreen> {
     },
   ];
 
+  List<Map<String, String>> _filteredOrders = [];
+  String _searchText = "";
+
+  @override
+  void initState() {
+    super.initState();
+    _filteredOrders = orders;
+  }
+
+  void _filterOrders(String searchText) {
+    setState(() {
+      _searchText = searchText;
+      if (_searchText.isEmpty) {
+        _filteredOrders = orders;
+      } else {
+        _filteredOrders = orders
+            .where((transaction) => transaction['title']!
+                .toLowerCase()
+                .contains(_searchText.toLowerCase()))
+            .toList();
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,7 +68,7 @@ class _OrderScreenState extends State<OrderScreen> {
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(vertical:16.0, horizontal: 24),
+            padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 24),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -59,8 +83,8 @@ class _OrderScreenState extends State<OrderScreen> {
               ],
             ),
           ),
-          const SearchBarComponent(
-              onChanged: _filterTransactions), // Add search bar
+           SearchBarComponent(
+              onChanged: _filterOrders), // Add search bar
           Expanded(
             child: ListView.builder(
               itemCount: orders.length,
@@ -71,7 +95,11 @@ class _OrderScreenState extends State<OrderScreen> {
                   shoeName: order['shoeName']!,
                   stockCount: order['stockCount']!,
                   onCartPressed: () {
-                    // Handle cart button press logic here
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Product added to cart'),
+                      ),
+                    );
                   },
                 );
               },
@@ -84,8 +112,4 @@ class _OrderScreenState extends State<OrderScreen> {
       ),
     );
   }
-}
-
-void _filterTransactions(String query) {
-  // Implement your filtering logic here
 }

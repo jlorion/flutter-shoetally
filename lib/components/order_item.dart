@@ -1,9 +1,3 @@
-import 'package:commerce_mobile/components/app_drawer.dart';
-import 'package:commerce_mobile/components/appbar.dart';
-import 'package:commerce_mobile/components/back_button_component.dart';
-import 'package:commerce_mobile/components/buttonIcon.dart';
-import 'package:commerce_mobile/components/navbar.dart';
-import 'package:commerce_mobile/components/search_component.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -39,7 +33,7 @@ class OrderItemComponent extends StatelessWidget {
             child: Image.network(
               imageUrl,
               height: 100, // Adjusted height for larger image
-              width: 180, // Adjusted width for larger image
+              width: 130, // Adjusted width for larger image
               fit: BoxFit.cover,
             ),
           ),
@@ -73,11 +67,11 @@ class OrderItemComponent extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: const Color(0xFFA259FF), // Purple background
                       borderRadius: BorderRadius.circular(
-                          7), // Rounded container for button
+                          7), 
                     ),
                     child: IconButton(
                       icon: const Icon(Icons.shopping_cart_outlined,
-                          color: Colors.white, size: 20), // White cart icon
+                          color: Colors.white, size: 20), 
                       onPressed: onCartPressed,
                     ),
                   ),
