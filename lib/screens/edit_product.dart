@@ -138,8 +138,8 @@ class _EditProductState extends State<EditProduct> {
                               height: 150,
                               width: double.infinity,
                               alignment: Alignment.center,
-                              child: preImage != ''? Image.network(preImage)
-                                  :_selectedFile == null
+                              child:
+                                  _selectedFile == null
                                   ? const Column(
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
