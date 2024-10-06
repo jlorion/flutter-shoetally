@@ -3,6 +3,7 @@ import 'package:commerce_mobile/components/appbar.dart';
 import 'package:commerce_mobile/components/back_button_component.dart';
 import 'package:commerce_mobile/components/custom_button.dart';
 import 'package:commerce_mobile/components/dropdownbuttonform.dart';
+import 'package:commerce_mobile/components/encapsulation.dart';
 import 'package:commerce_mobile/components/inputfields.dart';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart'; // Import file_picker
@@ -21,6 +22,7 @@ class _EditProductState extends State<EditProduct> {
   TextEditingController totalPurchaseTextField = TextEditingController();
   TextEditingController quantityTextField = TextEditingController();
   TextEditingController descriptionTextField = TextEditingController();
+  Encapsulation encap = Encapsulation();
 
   final String _selectedCategory = 'shoes';
 
@@ -89,7 +91,7 @@ class _EditProductState extends State<EditProduct> {
                       label: 'Category',
                       hintText: 'Select a category',
                       items: const ['shoes', 'slippers', 'food', 'vehicles'],
-                      selectedValue: _selectedCategory,
+                      selectedValue: encap,
                     ),
                     const SizedBox(height: 15),
                     InputFields(

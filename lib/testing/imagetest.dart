@@ -4,6 +4,8 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:commerce_mobile/components/encapsulation.dart';
+import 'package:commerce_mobile/controllers/Product_Controllers.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter/foundation.dart';
@@ -23,13 +25,13 @@ class Imagetest extends StatefulWidget {
 
 class _ImagetestState extends State<Imagetest> {
   XFile? _image;
-  final List<Product> product = ProductSeeder().productListSeed();
+  List<Product> product = ProductSeeder().productListSeed();
   final TextEditingController _name = TextEditingController();
   final TextEditingController _selling_price = TextEditingController();
   final TextEditingController _total_purchase = TextEditingController();
   final TextEditingController _product_stock = TextEditingController();
   final TextEditingController _category = TextEditingController();
-  String _finalImage = "";
+  final Encapsulation encap = Encapsulation();
 
   @override
   void initState() {
@@ -42,9 +44,7 @@ class _ImagetestState extends State<Imagetest> {
     return Consumer<StorageService>(
       builder: (context, storageService, widget) => Scaffold(
         floatingActionButton: FloatingActionButton(
-          onPressed: () => setState(() async {
-            _image = await storageService.selectImage();
-          }),
+          onPressed: ()async{ product = await ProductControllers().getProducts(); print(product[0].name);},
           child: const Icon(Icons.add),
         ),
         body: ListView(
@@ -106,25 +106,16 @@ class _ImagetestState extends State<Imagetest> {
             ),
             Center(
               child: ElevatedButton(
-                  onPressed: () async {
-                    //upload image and get link
-                    _finalImage = await storageService.updloadImage(_image);
-                    CollectionReference ref = FirebaseFirestore.instance.collection('products');
-                    //upload to firestore with Prdouct Model
-                    Product prodPost = Product(
-                        id: '',
-                        name: _name.text,
-                        selling_price: double.parse(_selling_price.text),
-                        total_purchase: double.parse(_total_purchase.text),
-                        product_stock: int.parse(_product_stock.text),
-                        category: _category.text,
-                        image: _finalImage);
-                    DocumentReference docref  = await ref.add(prodPost.toJson());
-                    await docref.update({
-                      'id': docref.id,
-                    });
-                  },
-                  child: Icon(Icons.send)),
+                  onPressed: ()async => await ProductControllers().postProduct(
+                    name: _name,
+                    selling_price: _selling_price,
+                    total_purchase: _total_purchase,
+                    product_stock:  _product_stock,
+                    category:  encap,
+                    imagePick: _image
+                  ),           
+                  child: Icon(Icons.send)
+                  ),
             )
           ],
         ),

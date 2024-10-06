@@ -31,27 +31,30 @@ void main() async{
   );
   
   runApp(
-    StreamProvider<AuthUser?>.value(
-      value: AuthenticationService().user,
-      initialData: null,
-      child: MaterialApp(
-          home: const SplashScreen(),
-          debugShowCheckedModeBanner: false,
-          routes: {
-            '/login': (context) => const LoginScreen(),
-            '/signup': (context) => const SignupScreen(),
-            '/dashboard': (context) => Dashboard(),
-            '/transaction_history': (context) => TransactionHistory(),
-            '/products': (context) => Products(),
-            '/profile': (context) => UserProfilePage(),
-            '/add-product': (context) => AddProduct(),
-            '/edit-product': (context) => EditProduct(),
-            '/add-customer': (context) => AddCustomer(),
-            '/customer-list': (context) => CustomerList(),
-            '/edit-profile': (context) => EditProfilePage(),
-            '/orders': (context) => OrderScreen(),
-            '/order-list': (context) => OrderListPage(),
-          }),
-    ),
+    ChangeNotifierProvider(
+      create: (context) => StorageService(), 
+      child: StreamProvider<AuthUser?>.value(
+          value: AuthenticationService().user,
+          initialData: null,
+          child: MaterialApp(
+              home: const SplashScreen(),
+              debugShowCheckedModeBanner: false,
+              routes: {
+                '/login': (context) => const LoginScreen(),
+                '/signup': (context) => const SignupScreen(),
+                '/dashboard': (context) => Dashboard(),
+                '/transaction_history': (context) => TransactionHistory(),
+                '/products': (context) => Products(),
+                '/profile': (context) => UserProfilePage(),
+                '/add-product': (context) => AddProduct(),
+                '/edit-product': (context) => EditProduct(),
+                '/add-customer': (context) => AddCustomer(),
+                '/customer-list': (context) => CustomerList(),
+                '/edit-profile': (context) => EditProfilePage(),
+                '/orders': (context) => OrderScreen(),
+                '/order-list': (context) => OrderListPage(),
+              }),
+        ),
+    )
   );
 }

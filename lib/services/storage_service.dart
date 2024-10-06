@@ -73,9 +73,6 @@ class StorageService with ChangeNotifier {
     return image;
   } 
 
-  
-  
-
   Future<String> updloadImage(XFile? image) async{
     _isUploading = true;
 

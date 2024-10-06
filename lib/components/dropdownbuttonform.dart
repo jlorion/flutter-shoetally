@@ -1,3 +1,4 @@
+import 'package:commerce_mobile/components/encapsulation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -5,7 +6,7 @@ class DropdownField extends StatefulWidget {
   final String label;
   final String hintText;
   final List<String> items;
-  final String selectedValue;
+  final Encapsulation selectedValue;
 
   const DropdownField({
     super.key,
@@ -21,6 +22,7 @@ class DropdownField extends StatefulWidget {
 
 class _DropdownFieldState extends State<DropdownField> {
   String? _currentValue; 
+  
 
   @override
   void initState() {
@@ -64,6 +66,7 @@ class _DropdownFieldState extends State<DropdownField> {
           onChanged: (String? newValue) {
             setState(() {
               _currentValue = newValue;
+              widget.selectedValue.text = newValue;
             });
           },
           decoration: InputDecoration(
