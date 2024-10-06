@@ -10,18 +10,37 @@ import 'package:file_picker/file_picker.dart'; // Import file_picker
 import 'package:dotted_border/dotted_border.dart'; // Import dotted_border
 
 class EditProduct extends StatefulWidget {
-  const EditProduct({super.key});
+  const EditProduct(
+      {super.key, required this.filteredTransactions, required this.index});
+  final List<Map<String, String>> filteredTransactions;
+  final int index;
 
   @override
   State<EditProduct> createState() => _EditProductState();
 }
 
 class _EditProductState extends State<EditProduct> {
+  @override
+  void initState() {
+    productNameTextField.text =
+        '${widget.filteredTransactions[widget.index]['productName']}';
+    sellingPriceTextField.text =
+        '${widget.filteredTransactions[widget.index]['sellingPrice']}';
+    totalPurchaseTextField.text =
+        '${widget.filteredTransactions[widget.index]['purchasePrice']}';
+    quantityTextField.text =
+        '${widget.filteredTransactions[widget.index]['quantity']}';
+    categoryTextField.text =
+        '${widget.filteredTransactions[widget.index]['category']}';
+
+    super.initState();
+  }
+
   TextEditingController productNameTextField = TextEditingController();
   TextEditingController sellingPriceTextField = TextEditingController();
   TextEditingController totalPurchaseTextField = TextEditingController();
   TextEditingController quantityTextField = TextEditingController();
-  TextEditingController descriptionTextField = TextEditingController();
+  TextEditingController categoryTextField = TextEditingController();
   Encapsulation encap = Encapsulation();
 
   final String _selectedCategory = 'shoes';
@@ -46,7 +65,7 @@ class _EditProductState extends State<EditProduct> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar(title: "Add Product"),
+      appBar: const CustomAppBar(title: "Edit Product"),
       drawer: const AppDrawer(),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -94,11 +113,6 @@ class _EditProductState extends State<EditProduct> {
                       selectedValue: encap,
                     ),
                     const SizedBox(height: 15),
-                    InputFields(
-                        label: 'Description',
-                        hintText: 'Enter the product description',
-                        controllerTextField: descriptionTextField),
-                    const SizedBox(height: 35),
                     GestureDetector(
                       onTap: _pickFile, // file picker on tap
                       child: DottedBorder(
@@ -130,7 +144,7 @@ class _EditProductState extends State<EditProduct> {
                                 )
                               : Text(
                                   _selectedFile!,
-                                  style: const TextStyle(color: Colors.black),
+                                  style: const TextStyle(color: Colors.black45),
                                 ),
                         ),
                       ),
