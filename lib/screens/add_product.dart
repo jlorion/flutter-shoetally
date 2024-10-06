@@ -32,7 +32,6 @@ class _AddProductState extends State<AddProduct> {
   TextEditingController descriptionTextField = TextEditingController();
   Encapsulation encap  = Encapsulation();
 
-  final String _selectedCategory = 'shoes';
 
   // Function to handle file picking
   @override
@@ -88,11 +87,6 @@ class _AddProductState extends State<AddProduct> {
                           selectedValue: encap,
                         ),
                         const SizedBox(height: 15),
-                        InputFields(
-                            label: 'Description',
-                            hintText: 'Enter the product description',
-                            controllerTextField: descriptionTextField),
-                        const SizedBox(height: 35),
                         GestureDetector(
                           onTap: () async {
                             final imageSeleted = await storageService.selectImage();
