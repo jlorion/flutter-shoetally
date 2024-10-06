@@ -42,21 +42,9 @@ class ProductControllers {
   }
 
   //update product
-  Future<void> updateProduct({
-    required String id,
-    TextEditingController? name,
-    TextEditingController? selling_price,
-    TextEditingController? total_purchase,
-    TextEditingController? product_stock,
-    TextEditingController? category,
-    XFile? imagePick,
-  }) async{
-    DocumentReference docref = await ref.doc(id);
-    docref.update({
-
-
-
-    });
+  Future<void> updateProduct(Product prod) async{
+    DocumentReference docref = await ref.doc(prod.id);
+    docref.update(prod.toJson());
   }
 
 

@@ -24,7 +24,7 @@ class AddProduct extends StatefulWidget {
 }
 
 class _AddProductState extends State<AddProduct> {
-  XFile? _image = null;
+  XFile? _image;
   TextEditingController productNameTextField = TextEditingController();
   TextEditingController sellingPriceTextField = TextEditingController();
   TextEditingController totalPurchaseTextField = TextEditingController();

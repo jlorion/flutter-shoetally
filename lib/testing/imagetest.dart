@@ -44,7 +44,8 @@ class _ImagetestState extends State<Imagetest> {
     return Consumer<StorageService>(
       builder: (context, storageService, widget) => Scaffold(
         floatingActionButton: FloatingActionButton(
-          onPressed: ()async{ product = await ProductControllers().getProducts(); print(product[0].name);},
+          onPressed: (){},
+          // onPressed: ()async{ product = await ProductControllers().getProducts(); print(product[0].name);},
           child: const Icon(Icons.add),
         ),
         body: ListView(

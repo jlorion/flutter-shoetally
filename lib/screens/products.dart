@@ -5,7 +5,9 @@ import 'package:commerce_mobile/components/buttonIcon.dart';
 import 'package:commerce_mobile/components/navbar.dart';
 import 'package:commerce_mobile/components/productcard.dart';
 import 'package:commerce_mobile/components/search_component.dart';
+import 'package:commerce_mobile/controllers/Product_Controllers.dart';
 import 'package:commerce_mobile/models/ProductsModel.dart';
+import 'package:commerce_mobile/services/storage_service.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -15,65 +17,35 @@ class Products extends StatefulWidget {
 }
 
 class _ProductsState extends State<Products> {
-  final List<Map<String, String>> _transactions = [
-    {
-      'productName': 'Century Tuna Ila Bernard',
-      'sellingPrice': '₱ 4,000.00',
-      'purchasePrice': '₱ 3,000.00',
-      'quantity': '30',
-      'category': 'Shoes',
-      'dateTime': 'September 29, 2024, 5:00 PM',
-      'image': 'exampleImage'
-    },
-    {
-      'productName': 'Nike Shoe',
-      'sellingPrice': '₱ 4,000.00',
-      'purchasePrice': '₱ 3,000.00',
-      'quantity': '30',
-      'category': 'Shoes',
-      'dateTime': 'September 29, 2024, 5:00 PM',
-      'image': 'exampleImage'
-    },
-    {
-      'productName': 'Addidas Shoe',
-      'sellingPrice': '₱ 4,000.00',
-      'purchasePrice': '₱ 3,000.00',
-      'quantity': '30',
-      'category': 'Shoes',
-      'dateTime': 'September 29, 2024, 5:00 PM',
-      'image': 'exampleImage'
-    },
-    {
-      'productName': 'Example Shoe',
-      'sellingPrice': '₱ 4,000.00',
-      'purchasePrice': '₱ 3,000.00',
-      'quantity': '30',
-      'category': 'Shoes',
-      'dateTime': 'September 29, 2024, 5:00 PM',
-      'image': 'exampleImage'
-    },
-    // More transactions...
-  ];
 
-  List<Map<String, String>> _filteredTransactions = [];
+  List<Product> _filteredTransactions = [];
   String _searchText = "";
 
   @override
-  void initState() {
+  void initState(){
     super.initState();
-    _filteredTransactions =
-        _transactions; // Initialize with full transaction list
+    populateProduct();
+    print(_filteredTransactions);
   }
 
-  void _filterTransactions(String searchText) {
+  void populateProduct() async{
+    final prodcutsList  = await ProductControllers().getProducts();
+    setState(() {
+      _filteredTransactions = prodcutsList;
+    });
+
+  }
+
+  void _filterTransactions(String searchText) async{
+    final productList = await ProductControllers().getProducts();
     setState(() {
       _searchText = searchText;
       if (_searchText.isEmpty) {
         _filteredTransactions =
-            _transactions; // Reset to full list if search is empty
+            productList; // Reset to full list if search is empty
       } else {
-        _filteredTransactions = _transactions
-            .where((transaction) => transaction['productName']!
+        _filteredTransactions = productList
+            .where((product) => product.name!
                 .toLowerCase()
                 .contains(_searchText.toLowerCase()))
             .toList();
@@ -84,8 +56,7 @@ class _ProductsState extends State<Products> {
   @override
   Widget build(BuildContext context) {
 
-
-
+    populateProduct();
     return Scaffold(
       appBar: const CustomAppBar(title: "Products"),
       drawer: const AppDrawer(),

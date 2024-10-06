@@ -27,7 +27,7 @@ class _DropdownFieldState extends State<DropdownField> {
   @override
   void initState() {
     super.initState();
-    _currentValue = null; // Initially set to null to show the hint
+    _currentValue = widget.selectedValue.text; // Initially set to null to show the hint
   }
 
   @override
