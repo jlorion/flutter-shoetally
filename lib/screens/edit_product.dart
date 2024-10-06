@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'dart:io';
+
 import 'package:commerce_mobile/components/app_drawer.dart';
 import 'package:commerce_mobile/components/appbar.dart';
 import 'package:commerce_mobile/components/back_button_component.dart';
@@ -7,13 +9,21 @@ import 'package:commerce_mobile/components/custom_button.dart';
 import 'package:commerce_mobile/components/dropdownbuttonform.dart';
 import 'package:commerce_mobile/components/encapsulation.dart';
 import 'package:commerce_mobile/components/encapsulation.dart';
+import 'package:commerce_mobile/components/encapsulation.dart';
 import 'package:commerce_mobile/components/inputfields.dart';
+import 'package:commerce_mobile/controllers/Product_Controllers.dart';
+import 'package:commerce_mobile/models/ProductsModel.dart';
+import 'package:commerce_mobile/services/storage_service.dart';
+import 'package:flutter/foundation.dart';
 import 'package:commerce_mobile/controllers/Product_Controllers.dart';
 import 'package:commerce_mobile/models/ProductsModel.dart';
 import 'package:commerce_mobile/services/storage_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart'; // Import file_picker
+import 'package:dotted_border/dotted_border.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart'; // Import dotted_border
 import 'package:dotted_border/dotted_border.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart'; // Import dotted_border
@@ -33,13 +43,20 @@ class _EditProductState extends State<EditProduct> {
   void initState() {
     productNameTextField.text =
         '${widget.filteredTransactions[widget.index].name}';
+        '${widget.filteredTransactions[widget.index].name}';
     sellingPriceTextField.text =
+        '${widget.filteredTransactions[widget.index].selling_price}';
         '${widget.filteredTransactions[widget.index].selling_price}';
     totalPurchaseTextField.text =
         '${widget.filteredTransactions[widget.index].total_purchase}';
+        '${widget.filteredTransactions[widget.index].total_purchase}';
     quantityTextField.text =
         '${widget.filteredTransactions[widget.index].product_stock}';
+        '${widget.filteredTransactions[widget.index].product_stock}';
     categoryTextField.text =
+        '${widget.filteredTransactions[widget.index].category}';
+    preImage = widget.filteredTransactions[widget.index].image;
+    stringid = widget.filteredTransactions[widget.index].id;
         '${widget.filteredTransactions[widget.index].category}';
     preImage = widget.filteredTransactions[widget.index].image;
     stringid = widget.filteredTransactions[widget.index].id;
