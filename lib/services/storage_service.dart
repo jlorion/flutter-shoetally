@@ -1,14 +1,19 @@
-
 import 'dart:io';
-
+import 'dart:math';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 
-class StorageService with ChangeNotifier{
-
+class StorageService with ChangeNotifier {
   final firebaseStorage = FirebaseStorage.instance;
+
+  String generateRandomString(int length) {
+  const characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  Random random = Random();
+
+  return List.generate(length, (index) => characters[random.nextInt(characters.length)]).join();
+}
 
 
   List<String> _imageUrls = [];
@@ -20,44 +25,40 @@ class StorageService with ChangeNotifier{
   bool get isLoading => _isLoading;
   bool get isUploading => _isUploading;
 
-
-  //get images with the userid 
-  Future<void> fetchImages() async{
-    //start loading 
+  //get images with the userid
+  Future<void> fetchImages() async {
+    //start loading
     _isLoading = true;
-    
+
     // get the download urls for each images;
     final ListResult result = await firebaseStorage.ref('images/').listAll();
 
-    //get dowload urls for each images 
-    final urls = await Future.wait(result.items.map((ref)=> ref.getDownloadURL()));
+    //get dowload urls for each images
+    final urls =
+        await Future.wait(result.items.map((ref) => ref.getDownloadURL()));
 
     _imageUrls = urls;
     _isLoading = false;
 
     //upadte ui
     notifyListeners();
-
   }
 
-  Future<void> deleteImage (String imageUrl) async{
+  Future<void> deleteImage(String imageUrl) async {
     try {
       _imageUrls.remove(imageUrl);
-
       final String path = extractPathFromUrl(imageUrl);
 
       await firebaseStorage.ref(path).delete();
-
     } catch (err) {
       print("eroro deleting image: $err");
-    } 
+    }
 
     //upadte ui
     notifyListeners();
-
   }
 
-  String extractPathFromUrl(String url){
+  String extractPathFromUrl(String url) {
     Uri uri = Uri.parse(url);
 
     String encodedPath = uri.pathSegments.last;
@@ -65,37 +66,45 @@ class StorageService with ChangeNotifier{
     return Uri.decodeComponent(encodedPath);
   }
 
-  Future<void> updloadImage(String fileName) async{
+  Future<XFile?> selectImage()async {
+    final ImagePicker pickImage = ImagePicker();
+    final XFile? image = await pickImage.pickImage(source: ImageSource.gallery);
+
+    return image;
+  } 
+
+  Future<String> updloadImage(XFile? image) async{
     _isUploading = true;
 
-    final ImagePicker picker = ImagePicker();
-    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+    String fileName = generateRandomString(10);
 
-    if (image == null) return;
+    if (image == null) return "error";
 
     File file = File(image.path);
+
+    String downloadUrl = "";
 
     try {
       String filePath = 'images/$fileName.png';
       //upload
-      await firebaseStorage.ref(fileName).putFile(file);
 
-      String downloadUrl = await firebaseStorage.ref(filePath).getDownloadURL();
-      _imageUrls.add(downloadUrl);
+      if (kIsWeb) {
+        await firebaseStorage.ref(filePath).putData(await image.readAsBytes(), SettableMetadata(
+          contentType: 'image/png',
+        ));
+      }else{
+        await firebaseStorage.ref(filePath).putFile(file);
+      }
+
+      downloadUrl = await firebaseStorage.ref(filePath).getDownloadURL();
+      _isUploading = false;
+
+      print(downloadUrl);
+      notifyListeners();
     } catch (err) {
       print("upload error: $err");
-    }finally{
-    _isUploading = false;
-    notifyListeners();
     }
-
+    return downloadUrl;
 
   }
-
-
-
 }
-
-
-
-

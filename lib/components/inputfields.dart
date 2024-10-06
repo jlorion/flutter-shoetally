@@ -3,16 +3,16 @@ import 'package:google_fonts/google_fonts.dart';
 
 class InputFields extends StatefulWidget {
   final String label;
-
   final String hintText;
-
   final TextEditingController controllerTextField;
+  final Color borderColor; // Add this parameter
 
   const InputFields({
     super.key,
     required this.label,
     required this.hintText,
     required this.controllerTextField,
+    this.borderColor = Colors.black45, // Default border color
   });
 
   @override
@@ -35,21 +35,23 @@ class _InputFieldsState extends State<InputFields> {
         ),
         TextField(
           controller: widget.controllerTextField,
-          keyboardType: TextInputType.emailAddress,
+          keyboardType: TextInputType.text, // Change this as necessary
           decoration: InputDecoration(
             hintText: widget.hintText,
-            hintStyle: TextStyle(color: Colors.black45),
+            hintStyle: const TextStyle(
+              color: Colors.black45,
+              fontWeight: FontWeight.w300,
+            ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(7.0),
-              borderSide: const BorderSide(
-                color: Color.fromARGB(
-                    255, 223, 223, 223), // grey color for enabled border
+              borderSide: BorderSide(
+                color: widget.borderColor, // Use borderColor here
               ),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(7.0),
-              borderSide: const BorderSide(
-                color: Color(0xFF6C3AAC), // purple color for focused border
+              borderSide: BorderSide(
+                color: const Color(0xFF6C3AAC), // Keep the focused border color
               ),
             ),
             contentPadding: const EdgeInsets.symmetric(

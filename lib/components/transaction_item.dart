@@ -17,7 +17,7 @@ class TransactionItemComponent {
           ),
           subtitle: Text(dateTime, style: GoogleFonts.inter(fontSize: 11)),
           trailing: Text(
-            "$price / Unit",
+            "₱ $price",
             style: GoogleFonts.inter(
               fontSize: 16,
               fontWeight: FontWeight.bold,
