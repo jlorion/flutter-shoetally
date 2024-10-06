@@ -3,6 +3,7 @@ import 'package:commerce_mobile/components/appbar.dart';
 import 'package:commerce_mobile/components/custom_button.dart';
 import 'package:commerce_mobile/components/navbar.dart';
 import 'package:commerce_mobile/components/current_order.dart'; // Import your new component
+import 'package:commerce_mobile/screens/receipt.dart';
 import 'package:flutter/material.dart';
 
 class OrderListPage extends StatefulWidget {
@@ -163,6 +164,10 @@ class _OrderListPageState extends State<OrderListPage> {
         CustomButton(
           onPressed: () {
             // add product function
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const Receipt()),
+            );
           },
           text: 'Checkout',
         ),

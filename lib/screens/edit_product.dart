@@ -6,6 +6,7 @@ import 'package:commerce_mobile/components/back_button_component.dart';
 import 'package:commerce_mobile/components/custom_button.dart';
 import 'package:commerce_mobile/components/dropdownbuttonform.dart';
 import 'package:commerce_mobile/components/encapsulation.dart';
+import 'package:commerce_mobile/components/encapsulation.dart';
 import 'package:commerce_mobile/components/inputfields.dart';
 import 'package:commerce_mobile/controllers/Product_Controllers.dart';
 import 'package:commerce_mobile/models/ProductsModel.dart';

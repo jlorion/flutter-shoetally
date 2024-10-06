@@ -1,5 +1,8 @@
 // ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors
 
+import 'dart:io';
+import 'dart:math';
 import 'dart:io';
 import 'dart:math';
 
@@ -7,9 +10,18 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:commerce_mobile/components/encapsulation.dart';
 import 'package:commerce_mobile/controllers/Product_Controllers.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:commerce_mobile/components/encapsulation.dart';
+import 'package:commerce_mobile/controllers/Product_Controllers.dart';
+import 'package:flutter/material.dart';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
+import 'package:commerce_mobile/services/storage_service.dart';
+import 'package:commerce_mobile/models/ProductsModel.dart';
+import 'package:commerce_mobile/seeders/product_seeder.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:commerce_mobile/services/storage_service.dart';
