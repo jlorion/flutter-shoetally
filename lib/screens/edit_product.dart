@@ -62,8 +62,6 @@ class _EditProductState extends State<EditProduct> {
   String? _selectedFile;
 
   // Function to handle file picking
-  
-
 
 
   @override
@@ -138,8 +136,7 @@ class _EditProductState extends State<EditProduct> {
                               height: 150,
                               width: double.infinity,
                               alignment: Alignment.center,
-                              child:
-                                  _selectedFile == null
+                              child: _image == null
                                   ? const Column(
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
@@ -167,15 +164,25 @@ class _EditProductState extends State<EditProduct> {
                           padding: const EdgeInsets.symmetric(horizontal: 60.0),
                           child: Center(
                             child: CustomButton(
-                              onPressed: () async => await ProductControllers().updateProduct(
+
+                              onPressed: () async{
+                                String finalImage;
+                                if (_image!=null) {
+                                  finalImage = await storageService.updloadImage(_image);
+                                  storageService.deleteImage(preImage);
+                                }else{
+                                  finalImage = preImage;
+                                }
+                                await ProductControllers().updateProduct(
                                 Product(id: stringid, 
                                 name: productNameTextField.text, 
                                 selling_price: double.parse(sellingPriceTextField.text), 
                                 total_purchase: double.parse(totalPurchaseTextField.text), 
                                 product_stock: int.parse(quantityTextField.text), 
                                 category: categoryTextField.text??'shoes', 
-                                image: preImage)
-                                      ),
+                                image: finalImage)
+                                );
+                              },
                               text: 'Edit Product',
                             ),
                           ),
