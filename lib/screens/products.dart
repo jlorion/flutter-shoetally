@@ -83,7 +83,7 @@ class _ProductsState extends State<Products> {
             ),
           ),
           SearchBarComponent(
-              onChanged: _filterTransactions), // Use SearchBarComponent
+              onChanged: _filterTransactions), 
           Expanded(
             child: ListView.builder(
               physics: const AlwaysScrollableScrollPhysics(),

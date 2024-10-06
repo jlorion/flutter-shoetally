@@ -1,5 +1,6 @@
 import 'package:commerce_mobile/components/app_drawer.dart';
 import 'package:commerce_mobile/components/appbar.dart';
+import 'package:commerce_mobile/components/infocard.dart';
 import 'package:commerce_mobile/components/navbar.dart';
 import 'package:commerce_mobile/components/transaction_item.dart';
 import 'package:flutter/material.dart';
@@ -15,28 +16,28 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   final List<Map<String, String>> _transactions = [
     {
-      'title': 'Century Tuna Ila Bernard',
-      'price': '₱ 25,000.00',
+      'title': 'ShoeStack',
+      'price': '25,000.00',
       'dateTime': 'September 29, 2024, 5:00 PM'
     },
     {
-      'title': 'Century Tuna Ila Bernard',
-      'price': '₱ 25,000.00',
+      'title': 'I shoe shop',
+      'price': '25,000.00',
       'dateTime': 'September 29, 2024, 5:00 PM'
     },
     {
-      'title': 'Kyle Dellatan',
-      'price': '₱ 25,000.00',
+      'title': 'ShoeStore',
+      'price': '25,000.00',
       'dateTime': 'September 29, 2024, 5:00 PM'
     },
     {
-      'title': 'Century Tuna Ila Bernard',
-      'price': '₱ 25,000.00',
+      'title': 'Sapatosan sa Panacan',
+      'price': '25,000.00',
       'dateTime': 'September 29, 2024, 5:00 PM'
     },
     {
-      'title': 'Century Tuna Ila Bernard',
-      'price': '₱ 25,000.00',
+      'title': 'ShoeRetail',
+      'price': '25,000.00',
       'dateTime': 'September 29, 2024, 5:00 PM'
     },
   ];
@@ -62,9 +63,15 @@ class _DashboardState extends State<Dashboard> {
             Center(
               child: Column(
                 children: [
-                  _infoCard("Total Products", "189893"),
+                  InfoCard(
+                    title: 'Total Products',
+                    value: '188435',
+                  ),
                   const SizedBox(height: 9),
-                  _infoCard("Number of Customers", "25"),
+                  InfoCard(
+                    title: 'Number of Customers',
+                    value: '7',
+                  )
                 ],
               ),
             ),
@@ -212,7 +219,7 @@ class _DashboardState extends State<Dashboard> {
           ),
           subtitle: Text(dateTime, style: GoogleFonts.inter(fontSize: 11)),
           trailing: Text(
-            "$price / Unit",
+            "$price",
             style: GoogleFonts.inter(
               fontSize: 16,
               fontWeight: FontWeight.bold,

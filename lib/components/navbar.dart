@@ -20,7 +20,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
         fontSize: 14.0,
       ),
       unselectedLabelStyle: const TextStyle(
-        fontWeight: FontWeight.bold,
+        fontWeight: FontWeight.normal,
         fontSize: 14.0,
       ),
       currentIndex: currentIndex,

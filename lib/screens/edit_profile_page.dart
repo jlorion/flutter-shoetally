@@ -18,54 +18,58 @@ class EditProfilePage extends StatelessWidget {
     return Scaffold(
       appBar: const CustomAppBar(title: "Edit Profile"), // Custom app bar
       drawer: const AppDrawer(), // Custom drawer
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Center(
-              child: CircleAvatarComponent(), // Avatar with photo upload
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Center(
+                  child: CircleAvatarComponent(), // Avatar with photo upload
+                ),
+                const SizedBox(height: 20),
+                InputFields(
+                  label: 'Name',
+                  hintText: 'Enter your name',
+                  controllerTextField: nameTextField,
+                ),
+                const SizedBox(height: 16),
+                InputFields(
+                  label: 'Email Address',
+                  hintText: 'Enter your email',
+                  controllerTextField: emailTextField,
+                ),
+                const SizedBox(height: 16),
+                InputFields(
+                  label: 'Phone Number',
+                  hintText: 'Enter your phone number',
+                  controllerTextField: phoneTextField,
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  'Password',
+                  style: GoogleFonts.inter(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w300,
+                    color: const Color(0xFF766789),
+                  ),
+                ),
+                const SizedBox(height: 3),
+                PasswordFields(
+                    passlabel: 'Password',
+                    hintText: 'Password',
+                    controllerTextField: passwordTextField),
+                const SizedBox(height: 30),
+                Center(
+                  child: CustomButton(
+                    onPressed: () {},
+                    text: 'Update',
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(height: 20),
-            InputFields(
-              label: 'Name',
-              hintText: 'Enter your name',
-              controllerTextField: nameTextField,
-            ),
-            const SizedBox(height: 16),
-            InputFields(
-              label: 'Email Address',
-              hintText: 'Enter your email',
-              controllerTextField: emailTextField,
-            ),
-            const SizedBox(height: 16),
-            InputFields(
-              label: 'Phone Number',
-              hintText: 'Enter your phone number',
-              controllerTextField: phoneTextField,
-            ),
-            const SizedBox(height: 16),
-            Text(
-              'Password',
-              style: GoogleFonts.inter(
-                fontSize: 15,
-                fontWeight: FontWeight.w300,
-                color: const Color(0xFF766789),
-              ),
-            ),
-            const SizedBox(height: 3),
-            PasswordFields(
-                passlabel: 'Password',
-                hintText: 'Password',
-                controllerTextField: passwordTextField),
-            const SizedBox(height: 30),
-            Center(
-              child: CustomButton(
-                onPressed: () {},
-                text: 'Update',
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );

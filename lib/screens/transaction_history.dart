@@ -4,7 +4,7 @@ import 'package:commerce_mobile/components/navbar.dart';
 import 'package:commerce_mobile/components/search_field_component.dart';
 import 'package:commerce_mobile/components/transaction_item.dart'; // Import the new transaction item component
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 
 class TransactionHistory extends StatefulWidget {
   @override

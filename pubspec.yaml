@@ -23,6 +23,7 @@ dependencies:
   animated_splash_screen:
   file_picker: ^5.2.1
   dotted_border: ^2.0.0
+  toastification: ^2.3.0
 
 dev_dependencies:
   flutter_test:
