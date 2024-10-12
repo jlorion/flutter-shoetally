@@ -14,7 +14,7 @@ class TransactionContorller {
   }
 
   //add Transaction 
-  Future<void> addTransaction(Transactions trans, List<Orders> orders)async{
+  Future<String> addTransaction(Transactions trans, List<Orders> orders)async{
     DocumentReference docref = await ref.add(trans.toJson());
     docref.update({
       'id': docref.id
@@ -26,6 +26,7 @@ class TransactionContorller {
         'id': callbackDoc.id
       });
     });
+    return docref.id;
   }
 
   Future<List<Orders>> getOrders(String id)async{

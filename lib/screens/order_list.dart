@@ -14,7 +14,10 @@ import 'package:commerce_mobile/models/OrdersModel.dart';
 import 'package:commerce_mobile/models/ProductsModel.dart';
 import 'package:commerce_mobile/models/TransactionsModel.dart';
 import 'package:commerce_mobile/models/UserModel.dart';
+import 'package:commerce_mobile/models/UserProfile.dart';
 import 'package:commerce_mobile/screens/receipt.dart';
+import 'package:commerce_mobile/services/authentication/auth_functions.dart';
+import 'package:commerce_mobile/services/authentication/authentication.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -27,12 +30,27 @@ class OrderListPage extends StatefulWidget {
 }
 
 class _OrderListPageState extends State<OrderListPage> {
+  User? user;
+  Userprofile? userprofile;
+
 
   List<Map<String, dynamic>> _orders = [];
   List<Customers> customerList = [];
   Encapsulation productName = Encapsulation();
   // final user = FirebaseAuth.instance.currentUser;
   // User userAcc = await FirebaseFirestore.instance.collection('users').doc(user?.uid).get();
+  Future<void> _loadUserData() async {
+    //
+    user = await AuthFunctions().getCurrentUser();
+    if (user != null) {
+      final profile = await AuthenticationService()
+          .getUserProfile(user); // Await and pass the user instance
+      print(profile?.name);
+      setState(() {
+        userprofile = profile;
+      }); // Trigger UI update
+    }
+  }
 
   void populateCustomer() async{
     final customers = await CustomerController().getAllCustomers();
@@ -61,17 +79,24 @@ class _OrderListPageState extends State<OrderListPage> {
   }
 
   void _increaseQuantity(int index) {
-    setState(() {
-      _orders[index]['quantity'] += 1;
-    });
+    print(_orders[index]['quantity']);
+    print(_orders[index]['stock']);
+    if (_orders[index]['quantity'] < _orders[index]['stock']) {
+      setState(() {
+        _orders[index]['quantity'] += 1;
+      });
+    }
   }
 
   void _decreaseQuantity(int index) {
-    setState(() {
-      if (_orders[index]['quantity'] > 0) {
-        _orders[index]['quantity'] -= 1;
-      }
-    });
+    if (_orders[index]['quantity'] < _orders[index]['stock']) {
+      setState(() {
+        if (_orders[index]['quantity'] > 1) {
+          _orders[index]['quantity'] -= 1;
+        }
+      });
+      
+    }
   }
 
   void _removeItem(int index) {
@@ -85,12 +110,13 @@ class _OrderListPageState extends State<OrderListPage> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_)=> populateOrders());
     populateCustomer();
-    
+    _loadUserData();
   }
 
   
-  void populateOrders() {
+  void populateOrders() async{
       final args = ModalRoute.of(context)!.settings.arguments;
+      
       if (args != null) {
       setState(() {
         final list = args as List<Product>;
@@ -99,7 +125,8 @@ class _OrderListPageState extends State<OrderListPage> {
           'productName': product.name,
           'productId': product.id,
           'price': product.selling_price,
-          'quantity': 1 
+          'quantity': 1 ,
+          'stock': product.product_stock
         }).toList();
       });
       }
@@ -136,7 +163,7 @@ class _OrderListPageState extends State<OrderListPage> {
                   return CurrentOrder(
                     imageUrl: order['imageUrl'],
                     productName: order['productName'],
-                    productId: order['productId'],
+                    productId: order['stock'].toString(),
                     price: order['price'],
                     quantity: order['quantity'],
                     onIncrease: () => _increaseQuantity(index),
@@ -183,14 +210,15 @@ class _OrderListPageState extends State<OrderListPage> {
         ),
         const SizedBox(height: 16),
         CustomButton(
-          onPressed: () {
-            Transactions trans = Transactions(id: '', customer_name: productName.text??'', total_amount: _getTotal(), date_time: DateTime.now().toString(), user_name: 'shit');
+          onPressed: () async{
+            Transactions trans = Transactions(id: '', customer_name: productName.text??'', total_amount: _getTotal(), date_time: DateTime.now().toString(), user_name: userprofile?.name??'');
             List<Orders> finalOrders = _orders.map((prod)=> Orders(id: '', product_name: prod['productName'], productImage: prod['imageUrl'], total_price: prod['price'], quantity: prod['quantity'])).toList();
             // add product function
-            TransactionContorller().addTransaction(trans, finalOrders);
+            String id = await TransactionContorller().addTransaction(trans, finalOrders);
+            double finalVal = _getTotal();
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const Receipt()),
+              MaterialPageRoute(builder: (context) => Receipt(stringId: id, total_amount: finalVal)),
             );
           },
           text: 'Checkout',

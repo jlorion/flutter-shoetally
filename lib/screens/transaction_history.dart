@@ -3,6 +3,8 @@ import 'package:commerce_mobile/components/appbar.dart';
 import 'package:commerce_mobile/components/navbar.dart';
 import 'package:commerce_mobile/components/search_field_component.dart';
 import 'package:commerce_mobile/components/transaction_item.dart'; // Import the new transaction item component
+import 'package:commerce_mobile/controllers/Transaction_Contorller.dart';
+import 'package:commerce_mobile/models/TransactionsModel.dart';
 import 'package:flutter/material.dart';
 
 
@@ -12,6 +14,7 @@ class TransactionHistory extends StatefulWidget {
 }
 
 class _TransactionHistoryState extends State<TransactionHistory> {
+  List<Transactions> transList = [];
   final List<Map<String, String>> _transactions = [
     {
       'title': 'Century Tuna Ila Bernard',
@@ -37,11 +40,17 @@ class _TransactionHistoryState extends State<TransactionHistory> {
 
   List<Map<String, String>> _filteredTransactions = [];
   String _searchText = "";
-
+  transPopulate()async{
+    final listthing = await TransactionContorller().getTransactions();
+    setState(() {
+      transList = listthing;
+    });
+  }
   @override
   void initState() {
     super.initState();
     _filteredTransactions = _transactions;
+    transPopulate();
   }
 
   void _filterTransactions(String searchText) {

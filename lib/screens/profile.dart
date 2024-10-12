@@ -28,10 +28,12 @@ class _UserProfilePageState extends State<UserProfilePage> {
     //
     user = await AuthFunctions().getCurrentUser();
     if (user != null) {
-      userProfile = await AuthenticationService()
+      final profile = await AuthenticationService()
           .getUserProfile(user); // Await and pass the user instance
+      setState(() {
+        userProfile = profile;
+      }); // Trigger UI update
     }
-    setState(() {}); // Trigger UI update
   }
   
 

@@ -31,8 +31,8 @@ class _OrderScreenState extends State<OrderScreen> {
     populateProduct();
   }
   void populateProduct() async{
-    // final data = await ProductControllers().getProducts();
-    List<Product> data  = ProductSeeder().productListSeed();
+    final data = await ProductControllers().getProducts();
+    // List<Product> data  = ProductSeeder().productListSeed();
     setState(() {
       products = data;
       _filteredOrders = products;
