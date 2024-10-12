@@ -100,11 +100,13 @@ class _UserProfilePageState extends State<UserProfilePage> {
                       leading: Icon(Icons.logout),
                       title: Text("Log Out"),
                       onTap: () async {
-                        User? user = await AuthFunctions().getCurrentUser();
+                        
                         await AuthFunctions().signOut();
-                        await user?.reload();
+                        User? user = await AuthFunctions().getCurrentUser();
+                        
                         if (user == null) {
                           setState(() {
+                            
                             Navigator.of(context).pushNamedAndRemoveUntil(
                               '/login',
                               (route) => false,
