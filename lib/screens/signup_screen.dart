@@ -123,7 +123,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           const Spacer(),
                           InkWell(
                             onTap: () {
-                              Navigator.pushNamed(context, '/login');
+                              Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false,);
                               setState(() {});
                             },
                             child: Text(

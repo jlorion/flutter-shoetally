@@ -74,9 +74,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   Center(
                     child: ElevatedButton(
                       onPressed: () async {
-                        Navigator.pushNamed(context, '/dashboard');
-                        String email = emailTextField.text;
-                        String password = passwordTextField.text;
+                        String email = emailTextField.text.trim();
+                        String password = passwordTextField.text.trim();
                         await AuthFunctions().login(context, email, password);
                       },
                       style: ElevatedButton.styleFrom(
