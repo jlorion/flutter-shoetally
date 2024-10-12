@@ -47,9 +47,11 @@ class _LoginScreenState extends State<LoginScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         InputFields(
-                            label: 'Email',
-                            hintText: 'Email',
-                            controllerTextField: emailTextField),
+                          label: 'Email',
+                          hintText: 'Email',
+                          controllerTextField: emailTextField,
+                          // borderColor: Color.fromARGB(255, 223, 223, 223),
+                        ),
                         const SizedBox(height: 35),
                         Text(
                           'Password',
@@ -72,9 +74,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   Center(
                     child: ElevatedButton(
                       onPressed: () async {
-                        Navigator.pushNamed(context, '/dashboard');
-                        String email = emailTextField.text;
-                        String password = passwordTextField.text;
+                        String email = emailTextField.text.trim();
+                        String password = passwordTextField.text.trim();
                         await AuthFunctions().login(context, email, password);
                       },
                       style: ElevatedButton.styleFrom(

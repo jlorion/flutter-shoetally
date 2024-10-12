@@ -33,6 +33,16 @@ class _CustomerListState extends State<CustomerList> {
     _fetchCustomers();
   }
 
+  // Fetch customers using the CustomerController
+  Future<void> _fetchCustomers() async {
+    List<Customers> customers =
+        await _customerController.getAllCustomers(); // Fetch from controller
+    setState(() {
+      _fetchedCustomers = customers; // Store fetched data
+      _isLoading = false; // Stop loading
+    });
+  }
+
   Future<void> showConfirmationDeleteDialog(
       BuildContext context, Customers customer) {
     return showDialog<void>(
@@ -104,16 +114,6 @@ class _CustomerListState extends State<CustomerList> {
         );
       },
     );
-  }
-
-  // Fetch customers using the CustomerController
-  Future<void> _fetchCustomers() async {
-    List<Customers> customers =
-        await _customerController.getAllCustomers(); // Fetch from controller
-    setState(() {
-      _fetchedCustomers = customers; // Store fetched data
-      _isLoading = false; // Stop loading
-    });
   }
 
   // Filter customers based on search input

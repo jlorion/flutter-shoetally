@@ -1,4 +1,5 @@
 import 'package:commerce_mobile/components/encapsulation.dart';
+import 'package:commerce_mobile/components/encapsulation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -8,26 +9,28 @@ class DropdownField extends StatefulWidget {
   final List<String> items;
   final Encapsulation selectedValue;
 
-  const DropdownField({
-    super.key,
-    required this.label,
-    required this.hintText,
-    required this.items,
-    required this.selectedValue,
-  });
+  final Color borderColor;
+
+  const DropdownField(
+      {super.key,
+      required this.label,
+      required this.hintText,
+      required this.items,
+      required this.selectedValue,
+      this.borderColor = Colors.black45});
 
   @override
   State<DropdownField> createState() => _DropdownFieldState();
 }
 
 class _DropdownFieldState extends State<DropdownField> {
-  String? _currentValue; 
-  
+  String? _currentValue;
 
   @override
   void initState() {
     super.initState();
-    _currentValue = null; // Initially set to null to show the hint
+    _currentValue =
+        widget.selectedValue.text; // Initially set to null to show the hint
   }
 
   @override
@@ -68,13 +71,14 @@ class _DropdownFieldState extends State<DropdownField> {
             setState(() {
               _currentValue = newValue;
               widget.selectedValue.text = newValue;
+              widget.selectedValue.text = newValue;
             });
           },
           decoration: InputDecoration(
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(7.0),
-              borderSide: const BorderSide(
-                color: Colors.black45,
+              borderSide: BorderSide(
+                color: widget.borderColor,
               ),
             ),
             focusedBorder: OutlineInputBorder(

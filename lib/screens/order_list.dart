@@ -1,5 +1,6 @@
 import 'package:commerce_mobile/components/app_drawer.dart';
 import 'package:commerce_mobile/components/appbar.dart';
+import 'package:commerce_mobile/components/back_button_component.dart';
 import 'package:commerce_mobile/components/custom_button.dart';
 import 'package:commerce_mobile/components/navbar.dart';
 import 'package:commerce_mobile/components/current_order.dart'; // Import your new component
@@ -92,6 +93,7 @@ class _OrderListPageState extends State<OrderListPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const BackButtonComponent(),
             const Text(
               'Current Order',
               style: TextStyle(
