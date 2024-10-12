@@ -95,7 +95,7 @@ class _DashboardState extends State<Dashboard> {
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: _transactions.length > 3 ? 3 : _transactions.length,
                 itemBuilder: (context, index) {
-                  return TransactionItemComponent.transactionItem(
+                  return TransactionItemComponent.transactionItem(context,
                     _transactions[index]['title']!,
                     _transactions[index]['price']!,
                     _transactions[index]['dateTime']!,

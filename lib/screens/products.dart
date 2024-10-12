@@ -57,7 +57,7 @@ class _ProductsState extends State<Products> {
     populateProduct();
     return Scaffold(
       appBar: const CustomAppBar(title: "Products"),
-      drawer: const AppDrawer(),
+      drawer: const AppDrawer(), 
       body: Column(
         children: [
           Padding(

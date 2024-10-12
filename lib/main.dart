@@ -12,6 +12,8 @@ import 'package:commerce_mobile/screens/orders.dart';
 import 'package:commerce_mobile/screens/products.dart';
 import 'package:commerce_mobile/screens/profile.dart';
 import 'package:commerce_mobile/screens/signup_screen.dart';
+import 'package:commerce_mobile/screens/transaction_details.dart';
+import 'package:commerce_mobile/services/authentication/authentication.dart';
 import 'package:commerce_mobile/services/storage_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:commerce_mobile/screens/transaction_history.dart';
@@ -40,6 +42,7 @@ void main() async {
           '/signup': (context) => const SignupScreen(),
           '/dashboard': (context) => Dashboard(),
           '/transaction_history': (context) => TransactionHistory(),
+          '/transaction_details': (context) => TransactionDetails(),
           '/products': (context) => Products(),
           '/profile': (context) => UserProfilePage(),
           '/add-product': (context) => AddProduct(),

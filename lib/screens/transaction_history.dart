@@ -15,22 +15,22 @@ class _TransactionHistoryState extends State<TransactionHistory> {
   final List<Map<String, String>> _transactions = [
     {
       'title': 'Century Tuna Ila Bernard',
-      'price': '₱ 25,000.00',
+      'price': '25,000.00',
       'dateTime': 'September 29, 2024, 5:00 PM'
     },
     {
       'title': 'Kyle Dellatan',
-      'price': '₱ 25,000.00',
+      'price': '25,000.00',
       'dateTime': 'September 29, 2024, 5:00 PM'
     },
     {
       'title': 'Century Tuna Ila Bernard',
-      'price': '₱ 25,000.00',
+      'price': '25,000.00',
       'dateTime': 'September 29, 2024, 5:00 PM'
     },
     {
       'title': 'Century Tuna Ila Bernard',
-      'price': '₱ 25,000.00',
+      'price': '25,000.00',
       'dateTime': 'September 29, 2024, 5:00 PM'
     },
   ];
@@ -90,7 +90,7 @@ class _TransactionHistoryState extends State<TransactionHistory> {
                         ),
                       ],
                     ),
-                    child: TransactionItemComponent.transactionItem(
+                    child: TransactionItemComponent.transactionItem(context,
                       transaction['title']!,
                       transaction['price']!,
                       transaction['dateTime']!,
