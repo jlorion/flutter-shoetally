@@ -38,6 +38,7 @@ void main() async {
           '/signup': (context) => const SignupScreen(),
           '/dashboard': (context) => Dashboard(),
           '/transaction_history': (context) => TransactionHistory(),
+          '/transaction_details': (context) => TransactionDetails(),
           '/products': (context) => Products(),
           '/profile': (context) => UserProfilePage(),
           '/add-product': (context) => AddProduct(),

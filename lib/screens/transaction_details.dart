@@ -31,7 +31,7 @@ class _TransactionDetailsState extends State<TransactionDetails> {
               style: GoogleFonts.inter(
                 fontWeight: FontWeight.w600,
                 fontSize: fontS,
-                color: const Color.fromARGB(255, 18, 18, 18),
+                color: const Color.fromRGBO(108, 58, 172, 100),
               ),
             ),
           ],
@@ -57,7 +57,7 @@ class _TransactionDetailsState extends State<TransactionDetails> {
                 style: GoogleFonts.inter(
                   fontWeight: FontWeight.w400,
                   fontSize: fontS,
-                  color: const Color.fromARGB(255, 18, 18, 18),
+                  color: const Color.fromRGBO(108, 58, 172, 100),
                 ),
               ),
             ),
@@ -117,6 +117,7 @@ class _TransactionDetailsState extends State<TransactionDetails> {
                               style: GoogleFonts.inter(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w600,
+                                color: const Color.fromRGBO(108, 58, 172, 100),
                               ),
                             ),
                             Text(
@@ -124,6 +125,7 @@ class _TransactionDetailsState extends State<TransactionDetails> {
                               style: GoogleFonts.inter(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w800,
+                                color: const Color.fromRGBO(108, 58, 172, 100),
                               ),
                             ),
                             const SizedBox(height: 25),
