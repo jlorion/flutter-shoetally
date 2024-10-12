@@ -1,6 +1,8 @@
+import 'package:commerce_mobile/models/UserProfile.dart';
 import 'package:commerce_mobile/services/authentication/auth_error_dialog.dart';
 import 'package:commerce_mobile/services/authentication/auth_exceptions.dart';
 import 'package:commerce_mobile/services/authentication/authentication.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class AuthFunctions {
@@ -11,6 +13,11 @@ class AuthFunctions {
   ) async {
     try {
       await AuthenticationService().loginUser(email, password);
+
+      Navigator.of(context).pushNamedAndRemoveUntil(
+        '/dashboard',
+        (route) => false,
+      );
     } on InvalidCredentialAuthException {
       await showErrorDialog(context, 'Invalid Credential');
     } on InvalidEmailAuthException {
@@ -53,4 +60,11 @@ class AuthFunctions {
       await showErrorDialog(context, 'General Error');
     }
   }
+
+  Future<void> signOut() => AuthenticationService().signOut();
+
+
+  Future<User?> getCurrentUser() => AuthenticationService().getCurrentUser();
+  Future<Userprofile?> getUserProfile(User? user) => AuthenticationService().getUserProfile(user);
+
 }

@@ -1,7 +1,6 @@
 import 'package:commerce_mobile/components/inputfields.dart';
 import 'package:commerce_mobile/components/passwordfields.dart';
 import 'package:commerce_mobile/services/authentication/auth_functions.dart';
-import 'package:commerce_mobile/services/authentication/authentication.dart';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -123,7 +122,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           const Spacer(),
                           InkWell(
                             onTap: () {
-                              Navigator.pushNamed(context, '/login');
+                              Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false,);
                               setState(() {});
                             },
                             child: Text(

@@ -12,7 +12,7 @@ class InputFields extends StatefulWidget {
     required this.label,
     required this.hintText,
     required this.controllerTextField,
-    this.borderColor = Colors.black45, // Default border color
+    this.borderColor = Colors.black12, // Default border color
   });
 
   @override

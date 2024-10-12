@@ -41,11 +41,11 @@ class _ProductCardState extends State<ProductCard> {
           ),
         ),
         subtitle: Text(
-          widget.filteredTransactions[widget.index].product_stock.toString()!,
+          'Stocks: ${widget.filteredTransactions[widget.index].product_stock.toString()}',
           style: GoogleFonts.inter(fontSize: 11),
         ),
         trailing: Text(
-          "${widget.filteredTransactions[widget.index].selling_price} / Unit",
+          "₱ ${widget.filteredTransactions[widget.index].selling_price} / Unit",
           style: GoogleFonts.inter(
             fontSize: 12,
             fontWeight: FontWeight.bold,
