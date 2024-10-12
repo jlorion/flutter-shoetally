@@ -1,3 +1,4 @@
+import 'package:commerce_mobile/components/appbarBack.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -80,7 +81,7 @@ class _TransactionDetailsState extends State<TransactionDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar(title: "Transaction Details"),
+      appBar: const CustomAppBarBack(title: "Transaction Details"),
       drawer: const AppDrawer(),
       body: ListView(
         shrinkWrap: true,

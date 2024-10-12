@@ -38,7 +38,7 @@ void main() async{
           value: AuthenticationService().user,
           initialData: null,
           child: MaterialApp(
-              home: const TransactionDetails(),
+              home: const SplashScreen(),
               debugShowCheckedModeBanner: false,
               routes: {
                 '/login': (context) => const LoginScreen(),

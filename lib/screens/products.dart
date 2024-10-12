@@ -88,7 +88,7 @@ class _ProductsState extends State<Products> {
 
     return Scaffold(
       appBar: const CustomAppBar(title: "Products"),
-      drawer: const AppDrawer(),
+      drawer: const AppDrawer(), 
       body: Column(
         children: [
           Padding(
