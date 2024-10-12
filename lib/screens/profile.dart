@@ -24,6 +24,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
   }
 
   Future<void> _loadUserData() async {
+
     //
     user = await AuthFunctions().getCurrentUser();
     if (user != null) {
@@ -33,6 +34,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
     setState(() {}); // Trigger UI update
   }
   
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

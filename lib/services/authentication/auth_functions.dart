@@ -13,6 +13,7 @@ class AuthFunctions {
   ) async {
     try {
       await AuthenticationService().loginUser(email, password);
+
       Navigator.of(context).pushNamedAndRemoveUntil(
         '/dashboard',
         (route) => false,
@@ -64,6 +65,6 @@ class AuthFunctions {
 
 
   Future<User?> getCurrentUser() => AuthenticationService().getCurrentUser();
-
   Future<Userprofile?> getUserProfile(User? user) => AuthenticationService().getUserProfile(user);
+
 }

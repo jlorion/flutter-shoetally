@@ -87,19 +87,23 @@ class EditProfilePage extends StatelessWidget {
                       try {
                         User? user = await AuthFunctions().getCurrentUser();
 
+
                         // Update name if the field is not empty
                         if (nameTextField.text.isNotEmpty) {
                           await _authService.updateUserName(
                               user!.uid, nameTextField.text.trim());
+
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                                 content: Text('Profile updated successfully!')),
                           );
+
                         }
 
                         // Validate and update email if the field is not empty
                         if (emailTextField.text.isNotEmpty &&
                             currentpasswordTextField.text.isNotEmpty) {
+
                           await _authService.updateEmail(
                               emailTextField.text.trim(),
                               currentpasswordTextField.text.trim());
@@ -133,6 +137,7 @@ class EditProfilePage extends StatelessWidget {
                       } on Exception {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text('Error updating password ')),
+
                         );
                       }
                     },
