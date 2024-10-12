@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:commerce_mobile/models/AuthUser.dart';
 import 'package:commerce_mobile/models/UserProfile.dart';
 import 'package:commerce_mobile/services/authentication/auth_exceptions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -25,9 +24,8 @@ class AuthenticationService {
           .createUserWithEmailAndPassword(email: email, password: password);
       User? user = userCredential.user;
       if (user != null) {
-        AuthUser? authUser = connectToAuthUser(user);
         //Create a Documment
-        await createUserDocumment(authUser!, name);
+        await createUserDocumment(user, name);
       } else {
         throw UserNotLoggedInAuthException;
       }
@@ -58,7 +56,7 @@ class AuthenticationService {
   }
 
   //User Document
-  Future<void> createUserDocumment(AuthUser user, String name) async {
+  Future<void> createUserDocumment(User user, String name) async {
     CollectionReference collection = firestore.collection('users');
     await collection.doc(user.uid).set({
       'id': user.uid,
@@ -67,8 +65,15 @@ class AuthenticationService {
     });
   }
 
+  Future<void> updateDocumment(User user) async {
+    CollectionReference collection = firestore.collection('users');
+    await collection.doc(user.uid).update({
+      'email': user.email,
+    });
+  }
+
   //Login User
-  Future<AuthUser?> loginUser(
+  Future<User?> loginUser(
     String email,
     String password,
   ) async {
@@ -80,8 +85,8 @@ class AuthenticationService {
       User? user = userCredential.user;
 
       if (user != null) {
-        await getUserProfile(user);
-        return connectToAuthUser(user);
+        await updateDocumment(user);
+        return user;
       } else {
         throw UserNotLoggedInAuthException();
       }
@@ -121,20 +126,6 @@ class AuthenticationService {
     await _auth.signOut();
   }
 
-  //Stream Authentication User
-  Stream<AuthUser?> get user {
-    return _auth.authStateChanges().map(connectToAuthUser);
-  }
-
-  //bind User to AuthUser
-  AuthUser? connectToAuthUser(User? user) {
-    return user != null
-        ? AuthUser(
-            uid: user.uid,
-            isEmailVerified: user.emailVerified,
-            email: user.email)
-        : null;
-  }
 
   //Set User Profile Document
   Future<Userprofile?> getUserProfile(User? user) async {
@@ -149,7 +140,6 @@ class AuthenticationService {
       if (doc.exists) {
         // Extract data from the document
         Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-
         // Return a Userprofile object
         return Userprofile(
           id: doc.id,
@@ -200,10 +190,6 @@ class AuthenticationService {
         // Now verify before updating the email
         await user.verifyBeforeUpdateEmail(newEmail);
         await user.reload();
-        DocumentReference userDocRef = firestore.collection('users').doc(user.uid);
-        await userDocRef.update({
-        'email': user.email, // Field name and new value
-      });
         // Send a confirmation message or prompt to inform the user
         developer.log(
             'Verification email sent to $newEmail. Please verify to complete the update.');

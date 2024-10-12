@@ -24,14 +24,15 @@ class _UserProfilePageState extends State<UserProfilePage> {
   }
 
   Future<void> _loadUserData() async {
-    user = await AuthenticationService().getCurrentUser();
+    //
+    user = await AuthFunctions().getCurrentUser();
     if (user != null) {
       userProfile = await AuthenticationService()
-          .getUserProfile(user!); // Await and pass the user instance
+          .getUserProfile(user); // Await and pass the user instance
     }
     setState(() {}); // Trigger UI update
   }
-
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(

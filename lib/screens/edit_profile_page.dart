@@ -5,6 +5,7 @@ import 'package:commerce_mobile/components/circle_avatar_component.dart';
 import 'package:commerce_mobile/components/custom_button.dart';
 import 'package:commerce_mobile/components/inputfields.dart';
 import 'package:commerce_mobile/components/passwordfields.dart';
+import 'package:commerce_mobile/services/authentication/auth_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -84,19 +85,28 @@ class EditProfilePage extends StatelessWidget {
                   child: CustomButton(
                     onPressed: () async {
                       try {
-                        User? user =
-                            await AuthenticationService().getCurrentUser();
+                        User? user = await AuthFunctions().getCurrentUser();
 
                         // Update name if the field is not empty
                         if (nameTextField.text.isNotEmpty) {
                           await _authService.updateUserName(
                               user!.uid, nameTextField.text.trim());
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content: Text('Profile updated successfully!')),
+                          );
                         }
 
                         // Validate and update email if the field is not empty
                         if (emailTextField.text.isNotEmpty &&
                             currentpasswordTextField.text.isNotEmpty) {
-                          await _authService.updateEmail(emailTextField.text.trim(), currentpasswordTextField.text.trim());
+                          await _authService.updateEmail(
+                              emailTextField.text.trim(),
+                              currentpasswordTextField.text.trim());
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content: Text('Verification email sent!')),
+                          );
                         }
 
                         // Update password if the field is not empty
@@ -105,17 +115,24 @@ class EditProfilePage extends StatelessWidget {
                           await _authService.updatePassword(
                               newpasswordTextField.text.trim(),
                               currentpasswordTextField.text.trim());
-                        }
 
-                        // Optionally show a success message or navigate back
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content: Text('Change password successfully!')),
+                          );
+                          await AuthFunctions().signOut();
+                        User? user = await AuthFunctions().getCurrentUser();
+                        
+                        if (user == null) {
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                              '/login',
+                              (route) => false,
+                            );
+                        }
+                        }
+                      } on Exception {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                              content: Text('Profile updated successfully!')),
-                        );
-                      } on Exception catch (e) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                              content: Text('Error updating password: $e')),
+                          SnackBar(content: Text('Error updating password ')),
                         );
                       }
                     },

@@ -1,3 +1,4 @@
+import 'package:commerce_mobile/models/UserProfile.dart';
 import 'package:commerce_mobile/services/authentication/auth_error_dialog.dart';
 import 'package:commerce_mobile/services/authentication/auth_exceptions.dart';
 import 'package:commerce_mobile/services/authentication/authentication.dart';
@@ -12,7 +13,6 @@ class AuthFunctions {
   ) async {
     try {
       await AuthenticationService().loginUser(email, password);
-
       Navigator.of(context).pushNamedAndRemoveUntil(
         '/dashboard',
         (route) => false,
@@ -64,4 +64,6 @@ class AuthFunctions {
 
 
   Future<User?> getCurrentUser() => AuthenticationService().getCurrentUser();
+
+  Future<Userprofile?> getUserProfile(User? user) => AuthenticationService().getUserProfile(user);
 }

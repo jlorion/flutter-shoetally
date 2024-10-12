@@ -1,7 +1,6 @@
 import 'package:commerce_mobile/components/inputfields.dart';
 import 'package:commerce_mobile/components/passwordfields.dart';
 import 'package:commerce_mobile/services/authentication/auth_functions.dart';
-import 'package:commerce_mobile/services/authentication/authentication.dart';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';

@@ -1,11 +1,9 @@
 import 'package:commerce_mobile/Wrapper.dart';
 import 'package:commerce_mobile/firebase_options.dart';
-import 'package:commerce_mobile/models/AuthUser.dart';
 import 'package:commerce_mobile/screens/add_customer.dart';
 import 'package:commerce_mobile/screens/dashboard.dart';
 import 'package:commerce_mobile/screens/add_product.dart';
 import 'package:commerce_mobile/screens/customer_list.dart';
-import 'package:commerce_mobile/screens/edit_product.dart';
 import 'package:commerce_mobile/screens/edit_profile_page.dart';
 import 'package:commerce_mobile/screens/login_screen.dart';
 import 'package:commerce_mobile/screens/order_list.dart';
