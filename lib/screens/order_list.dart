@@ -1,46 +1,44 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:commerce_mobile/components/app_drawer.dart';
 import 'package:commerce_mobile/components/appbar.dart';
 import 'package:commerce_mobile/components/custom_button.dart';
+import 'package:commerce_mobile/components/dropdownbuttonform.dart';
+import 'package:commerce_mobile/components/encapsulation.dart';
 import 'package:commerce_mobile/components/navbar.dart';
 import 'package:commerce_mobile/components/current_order.dart'; // Import your new component
+import 'package:commerce_mobile/controllers/Transaction_Contorller.dart';
+import 'package:commerce_mobile/controllers/customerController.dart';
+import 'package:commerce_mobile/models/CustomersModel.dart';
+import 'package:commerce_mobile/models/OrdersModel.dart';
+import 'package:commerce_mobile/models/ProductsModel.dart';
+import 'package:commerce_mobile/models/TransactionsModel.dart';
+import 'package:commerce_mobile/models/UserModel.dart';
 import 'package:commerce_mobile/screens/receipt.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class OrderListPage extends StatefulWidget {
-  const OrderListPage({Key? key}) : super(key: key);
+  OrderListPage({Key? key,}) : super(key: key);
 
   @override
   State<OrderListPage> createState() => _OrderListPageState();
+
 }
 
 class _OrderListPageState extends State<OrderListPage> {
-  // List of orders with prices and quantities (starting at 0)
-  final List<Map<String, dynamic>> _orders = [
-    {
-      'imageUrl':
-          'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg',
-      'productName': 'Air Jordans 1 High',
-      'productId': '#25139526913984',
-      'price': 1500.00,
-      'quantity': 0, // Start at zero
-    },
-    {
-      'imageUrl':
-          'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl-2.jpg',
-      'productName': 'KOB Nike Precision',
-      'productId': '#53459358345',
-      'price': 2499.00,
-      'quantity': 0, // Start at zero
-    },
-    {
-      'imageUrl':
-          'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl-3.jpg',
-      'productName': 'Savory Adidas',
-      'productId': '#1297170700671',
-      'price': 999.00,
-      'quantity': 0, // Start at zero
-    },
-  ];
+
+  List<Map<String, dynamic>> _orders = [];
+  List<Customers> customerList = [];
+  Encapsulation productName = Encapsulation();
+  // final user = FirebaseAuth.instance.currentUser;
+  // User userAcc = await FirebaseFirestore.instance.collection('users').doc(user?.uid).get();
+
+  void populateCustomer() async{
+    final customers = await CustomerController().getAllCustomers();
+    setState(() {
+      customerList = customers;
+    });
+  }
 
   // Calculate the subtotal based on orders with a quantity > 0
   double _getSubtotal() {
@@ -50,7 +48,7 @@ class _OrderListPageState extends State<OrderListPage> {
   }
 
   double _getTax() {
-    return _getSubtotal() * 0.05; // 5% tax
+    return _getSubtotal() * 0.12; // 12% tax
   }
 
   double _getShipping() {
@@ -80,9 +78,35 @@ class _OrderListPageState extends State<OrderListPage> {
       _orders.removeAt(index);
     });
   }
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_)=> populateOrders());
+    populateCustomer();
+    
+  }
+
+  
+  void populateOrders() {
+      final args = ModalRoute.of(context)!.settings.arguments;
+      if (args != null) {
+      setState(() {
+        final list = args as List<Product>;
+        _orders = list.map((product)=> {
+          'imageUrl': product.image,
+          'productName': product.name,
+          'productId': product.id,
+          'price': product.selling_price,
+          'quantity': 1 
+        }).toList();
+      });
+      }
+    }
 
   @override
   Widget build(BuildContext context) {
+    print(_orders);
     return Scaffold(
       appBar: const CustomAppBar(title: "Orders"),
       drawer: const AppDrawer(),
@@ -141,12 +165,7 @@ class _OrderListPageState extends State<OrderListPage> {
           ),
         ),
         const SizedBox(height: 16),
-        TextField(
-          decoration: const InputDecoration(
-            labelText: 'Customer',
-            border: OutlineInputBorder(),
-          ),
-        ),
+        DropdownField(label: 'Customer', hintText: 'customer name', items: customerList.map((x)=> x.name).toList(), selectedValue: productName),
         const SizedBox(height: 16),
         _buildSummaryRow(
             'Subtotal', 'PHP ${_getSubtotal().toStringAsFixed(2)}'),
@@ -163,7 +182,10 @@ class _OrderListPageState extends State<OrderListPage> {
         const SizedBox(height: 16),
         CustomButton(
           onPressed: () {
+            Transactions trans = Transactions(id: '', customer_name: productName.text??'', total_amount: _getTotal(), date_time: DateTime.now().toString(), user_name: 'shit');
+            List<Orders> finalOrders = _orders.map((prod)=> Orders(id: '', product_name: prod['productName'], productImage: prod['imageUrl'], total_price: prod['price'], quantity: prod['quantity'])).toList();
             // add product function
+            TransactionContorller().addTransaction(trans, finalOrders);
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => const Receipt()),

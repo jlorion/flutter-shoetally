@@ -20,8 +20,8 @@ class Product {
     return Product(
         id: userDoc,
         name: data['name'],
-        selling_price: data['selling_price'],
-        total_purchase: data['total_purchase'],
+        selling_price: data['selling_price'].toDouble(),
+        total_purchase: data['total_purchase'].toDouble(),
         product_stock: data['product_stock'],
         category: data['category'],
         image: data['image']);

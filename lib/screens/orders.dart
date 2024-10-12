@@ -5,6 +5,9 @@ import 'package:commerce_mobile/components/buttonIcon.dart';
 import 'package:commerce_mobile/components/navbar.dart';
 import 'package:commerce_mobile/components/order_item.dart';
 import 'package:commerce_mobile/components/search_component.dart';
+import 'package:commerce_mobile/controllers/Product_Controllers.dart';
+import 'package:commerce_mobile/models/ProductsModel.dart';
+import 'package:commerce_mobile/seeders/product_seeder.dart';
 import 'package:flutter/material.dart';
 
 class OrderScreen extends StatefulWidget {
@@ -15,50 +18,41 @@ class OrderScreen extends StatefulWidget {
 }
 
 class _OrderScreenState extends State<OrderScreen> {
-  final List<Map<String, String>> orders = [
-    {
-      'imageUrl':
-          'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg', // Example image from Flutter library
-      'shoeName': 'Air Jordans 1 High',
-      'stockCount': '50',
-    },
-    {
-      'imageUrl':
-          'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl-2.jpg', // Another Flutter example image
-      'shoeName': 'Kob NIKE Precision',
-      'stockCount': '0',
-    },
-    {
-      'imageUrl':
-          'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl-3.jpg', // Flutter sample image for cards
-      'shoeName': 'Savoy Adidas',
-      'stockCount': '99',
-    },
-  ];
-
-  List<Map<String, String>> _filteredOrders = [];
-  String _searchText = "";
+  List<Product> products = [];
+  
+  List<Product> _filteredOrders = [];
+  List<Product> chosenProducts = [];
+  String _searchText = '';
+  
 
   @override
   void initState() {
     super.initState();
-    _filteredOrders = orders;
+    populateProduct();
+  }
+  void populateProduct() async{
+    // final data = await ProductControllers().getProducts();
+    List<Product> data  = ProductSeeder().productListSeed();
+    setState(() {
+      products = data;
+      _filteredOrders = products;
+    });
   }
 
   void _filterOrders(String searchText) {
     setState(() {
       _searchText = searchText;
       if (_searchText.isEmpty) {
-        _filteredOrders = orders;
+        _filteredOrders = products;
       } else {
-        _filteredOrders = orders
-            .where((transaction) => transaction['title']!
+        _filteredOrders = products
+            .where((product) => product.name
                 .toLowerCase()
                 .contains(_searchText.toLowerCase()))
             .toList();
       }
     });
-  }
+  } 
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +71,7 @@ class _OrderScreenState extends State<OrderScreen> {
                 IconButtonComponent(
                   buttonText: 'Order List',
                   onPressed: () {
-                    Navigator.pushNamed(context, '/order-list');
+                    Navigator.pushNamed(context, '/order-list', arguments: chosenProducts);
                   },
                 ),
               ],
@@ -87,14 +81,23 @@ class _OrderScreenState extends State<OrderScreen> {
               onChanged: _filterOrders), // Add search bar
           Expanded(
             child: ListView.builder(
-              itemCount: orders.length,
+              itemCount: _filteredOrders.length,
               itemBuilder: (context, index) {
-                final order = orders[index];
+                final product = _filteredOrders[index];
                 return OrderItemComponent(
-                  imageUrl: order['imageUrl']!,
-                  shoeName: order['shoeName']!,
-                  stockCount: order['stockCount']!,
+                  imageUrl: product.image,
+                  shoeName: product.name,
+                  stockCount: product.product_stock.toString(),
                   onCartPressed: () {
+                    setState(() {
+                      if (!chosenProducts.contains(product)) {
+                        chosenProducts.add(product);
+                        print(chosenProducts.length);
+                      }else{
+                        //error thing "product already on cart"
+                        print("product already on cart");
+                      }
+                    });
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         content: Text('Product added to cart'),

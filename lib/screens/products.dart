@@ -19,13 +19,13 @@ class Products extends StatefulWidget {
 class _ProductsState extends State<Products> {
 
   List<Product> _filteredTransactions = [];
+  List<Product> _productList = [];
   String _searchText = "";
 
   @override
   void initState(){
     super.initState();
     populateProduct();
-    print(_filteredTransactions);
   }
 
   void populateProduct() async{
