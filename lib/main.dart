@@ -13,6 +13,7 @@ import 'package:commerce_mobile/screens/orders.dart';
 import 'package:commerce_mobile/screens/products.dart';
 import 'package:commerce_mobile/screens/profile.dart';
 import 'package:commerce_mobile/screens/signup_screen.dart';
+import 'package:commerce_mobile/screens/transaction_details.dart';
 import 'package:commerce_mobile/services/authentication/authentication.dart';
 import 'package:commerce_mobile/services/storage_service.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -37,7 +38,7 @@ void main() async{
           value: AuthenticationService().user,
           initialData: null,
           child: MaterialApp(
-              home: const SplashScreen(),
+              home: const TransactionDetails(),
               debugShowCheckedModeBanner: false,
               routes: {
                 '/login': (context) => const LoginScreen(),
