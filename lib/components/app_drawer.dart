@@ -1,9 +1,10 @@
+import 'package:commerce_mobile/Wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
-
+  
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -32,7 +33,7 @@ class AppDrawer extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'John Doe', // user name
+                          'name of people', // user name
                           style: GoogleFonts.inter(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
@@ -40,7 +41,7 @@ class AppDrawer extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          'john.doe@example.com', // user email or other info
+                          'email of people', // user email or other info
                           style: GoogleFonts.inter(
                             fontSize: 14,
                             color: Colors.white70,

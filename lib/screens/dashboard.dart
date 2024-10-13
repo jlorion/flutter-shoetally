@@ -3,6 +3,11 @@ import 'package:commerce_mobile/components/appbar.dart';
 import 'package:commerce_mobile/components/infocard.dart';
 import 'package:commerce_mobile/components/navbar.dart';
 import 'package:commerce_mobile/components/transaction_item.dart';
+import 'package:commerce_mobile/controllers/Product_Controllers.dart';
+import 'package:commerce_mobile/controllers/Transaction_Contorller.dart';
+import 'package:commerce_mobile/controllers/customerController.dart';
+import 'package:commerce_mobile/models/CustomersModel.dart';
+import 'package:commerce_mobile/models/ProductsModel.dart';
 import 'package:commerce_mobile/models/TransactionsModel.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -15,37 +20,26 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
-  final List<Map<String, String>> _transactions = [
-    {
-      'title': 'ShoeStack',
-      'price': '25,000.00',
-      'dateTime': 'September 29, 2024, 5:00 PM'
-    },
-    {
-      'title': 'I shoe shop',
-      'price': '25,000.00',
-      'dateTime': 'September 29, 2024, 5:00 PM'
-    },
-    {
-      'title': 'ShoeStore',
-      'price': '25,000.00',
-      'dateTime': 'September 29, 2024, 5:00 PM'
-    },
-    {
-      'title': 'Sapatosan sa Panacan',
-      'price': '25,000.00',
-      'dateTime': 'September 29, 2024, 5:00 PM'
-    },
-    {
-      'title': 'ShoeRetail',
-      'price': '25,000.00',
-      'dateTime': 'September 29, 2024, 5:00 PM'
-    },
-  ];
+
+  List<Product> products = [];
+  List<Customers> customers = [];
+  List<Transactions> _transactions = [];
+
+  populateFromDatabase()async{
+    final prods = await ProductControllers().getProducts();
+    final clients = await CustomerController().getAllCustomers();
+    final trans = await TransactionContorller().getTransactions();
+    setState(() {
+      products = prods;
+      customers = clients;
+      _transactions = trans;
+    });
+  }
 
   @override
   void initState() {
     super.initState();
+    populateFromDatabase();
   }
 
   @override
@@ -66,12 +60,15 @@ class _DashboardState extends State<Dashboard> {
                 children: [
                   InfoCard(
                     title: 'Total Products',
-                    value: '188435',
+                    value: products.fold({"totalstock": 0}, (premap, map) {
+                      premap["totalstock"] = premap["totalstock"]! + map.product_stock;
+                      return premap;
+                    })["totalstock"].toString(),
                   ),
                   const SizedBox(height: 9),
                   InfoCard(
                     title: 'Number of Customers',
-                    value: '7',
+                    value: customers.length.toString(),
                   )
                 ],
               ),
@@ -97,10 +94,10 @@ class _DashboardState extends State<Dashboard> {
                 itemCount: _transactions.length > 3 ? 3 : _transactions.length,
                 itemBuilder: (context, index) {
                   return TransactionItemComponent.transactionItem(context,
-                    _transactions[index]['title']!,
-                    _transactions[index]['price']!,
-                    _transactions[index]['dateTime']!,
-                    Transactions(id: '1', customer_name: 'name', total_amount: 12, date_time: 'somethng', user_name: 'ldkajdslf')
+                    _transactions[index].customer_name,
+                    _transactions[index].total_amount.toStringAsFixed(2),
+                    _transactions[index].date_time,
+                    _transactions[index]
                   );
                 },
               ),
