@@ -1,4 +1,9 @@
+import 'dart:ffi';
+
 import 'package:commerce_mobile/components/appbarBack.dart';
+import 'package:commerce_mobile/controllers/Transaction_Contorller.dart';
+import 'package:commerce_mobile/models/OrdersModel.dart';
+import 'package:commerce_mobile/models/TransactionsModel.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -13,7 +18,9 @@ class TransactionDetails extends StatefulWidget {
 }
 
 class _TransactionDetailsState extends State<TransactionDetails> {
-  receiptTextDetail(leftText, rightText, fontS) => Padding(
+  Transactions? trans;
+  List<Orders> orders = [];
+  receiptTextDetail(leftText, rightText, int fontS) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 19.0),
         child: Row(
           children: [
@@ -27,10 +34,10 @@ class _TransactionDetailsState extends State<TransactionDetails> {
               ),
             ),
             Text(
-              rightText,
+              rightText??'',
               style: GoogleFonts.inter(
                 fontWeight: FontWeight.w600,
-                fontSize: fontS,
+                fontSize: fontS.toDouble(),
                 color: const Color.fromRGBO(108, 58, 172, 100),
               ),
             ),
@@ -38,7 +45,7 @@ class _TransactionDetailsState extends State<TransactionDetails> {
         ),
       );
 
-  productsListTextDetail(quantity, productName, price, fontS) => Padding(
+  Widget productsListTextDetail(quantity, productName, price, int fontS) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 19.0),
         child: Row(
           children: [
@@ -46,7 +53,7 @@ class _TransactionDetailsState extends State<TransactionDetails> {
               quantity,
               style: GoogleFonts.inter(
                 fontWeight: FontWeight.w400,
-                fontSize: fontS,
+                fontSize: fontS.toDouble(),
                 color: const Color(0xFF766789),
               ),
             ),
@@ -56,16 +63,16 @@ class _TransactionDetailsState extends State<TransactionDetails> {
                 productName,
                 style: GoogleFonts.inter(
                   fontWeight: FontWeight.w400,
-                  fontSize: fontS,
+                  fontSize: fontS.toDouble(),
                   color: const Color.fromRGBO(108, 58, 172, 100),
                 ),
               ),
             ),
             Text(
-              price,
+              price.toString(),
               style: GoogleFonts.inter(
                 fontWeight: FontWeight.w600,
-                fontSize: fontS,
+                fontSize: fontS.toDouble(),
                 color: const Color.fromARGB(255, 18, 18, 18),
               ),
             ),
@@ -77,6 +84,35 @@ class _TransactionDetailsState extends State<TransactionDetails> {
       style: GoogleFonts.inter(
         fontWeight: FontWeight.w600,
       ));
+  
+  currentTrans(){
+    final args = ModalRoute.of(context)!.settings.arguments;
+    setState(() {
+      trans = args as Transactions;
+    });
+    populateOrders();
+  }
+
+  populateOrders()async{
+    if (trans?.id != null) {
+      final prods = await TransactionContorller().getOrders(trans!.id);
+      setState(() {
+        orders = prods;
+      });
+    }
+    
+  }
+  
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_)=> currentTrans());
+    populateOrders();
+
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -121,7 +157,7 @@ class _TransactionDetailsState extends State<TransactionDetails> {
                               ),
                             ),
                             Text(
-                              '[ADIDAS CO]',
+                              '[${trans?.customer_name}]',
                               style: GoogleFonts.inter(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w800,
@@ -132,18 +168,18 @@ class _TransactionDetailsState extends State<TransactionDetails> {
                             Divider(color: Colors.grey.shade300, thickness: 1),
                             const SizedBox(height: 25),
                             receiptTextDetail(
-                                'Reference Number', '000085752257', 15),
+                                'Reference Number', trans?.id, 10),
                             const SizedBox(height: 15),
-                            receiptTextDetail('Date', 'Mar 22, 2023', 15),
+                            receiptTextDetail('Date', trans?.date_time.split(' ')[0]??"", 15),
                             const SizedBox(height: 15),
-                            receiptTextDetail('Time', '07:80 AM', 15),
+                            receiptTextDetail('Time', trans?.date_time.split(" ")[1]??"", 15),
                             const SizedBox(height: 15),
                             receiptTextDetail(
                                 'Payment Method', 'Credit Card', 15),
                             const SizedBox(height: 15),
                             Divider(color: Colors.grey.shade300, thickness: 1),
                             const SizedBox(height: 20),
-                            receiptTextDetail('Amount', 'PHP 1,000.00', 20),
+                            receiptTextDetail('Amount', 'PHP ${trans?.total_amount.toStringAsFixed(2)??""}', 20),
                             const SizedBox(height: 20),
                             Divider(color: Colors.grey.shade300, thickness: 1),
                             const SizedBox(height: 20),
@@ -155,18 +191,13 @@ class _TransactionDetailsState extends State<TransactionDetails> {
                               ),
                             ),
                             const SizedBox(height: 25),
-
                             // Product List
-                            productsListTextDetail(
-                                '1x', 'Air Jordans 1 High', 'PHP 1,500.00', 12),
-                            const SizedBox(height: 13),
-                            productsListTextDetail(
-                                '1x', 'KOB Nike Precision', 'PHP 1,500.00', 12),
-                            const SizedBox(height: 13),
-                            productsListTextDetail(
-                                '1x', 'Savory Adidas', 'PHP 1,500.00', 12),
-                            const SizedBox(height: 13),
-
+                            Column(
+                                children: orders.map((order) =>productsListTextDetail(
+                                  order.quantity.toString(), 
+                                  order.product_name, 
+                                  order.total_price.toStringAsFixed(2), 12)).toList()
+                            )
                             // Add more items here if needed
                           ],
                         ),

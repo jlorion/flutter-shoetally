@@ -14,13 +14,13 @@ class Transactions {
       required this.user_name});
 
   factory Transactions.fromFireStore(
-      Map<String, dynamic> data, String transDoc) {
+      Map<String, dynamic> data, String transDoc) { 
     return Transactions(
         id: transDoc,
-        customer_name: data['customer_name'],
+        customer_name: data["customer_name"]??'customernam testing',
         total_amount: data['total_amount'],
         date_time: data['date_time'],
-        user_name: data['user_name']);
+        user_name: data['user_name']??'username testing');
   }
 
   Map<String, dynamic> toJson(){

@@ -16,7 +16,7 @@ class Receipt extends StatefulWidget {
 }
 
 class _ReceiptState extends State<Receipt> {
-  receiptTextDetail(leftText, rightText, fontS) => Padding(
+  receiptTextDetail(leftText, rightText, int fontS) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 19.0),
         child: Row(
           children: [
@@ -33,7 +33,7 @@ class _ReceiptState extends State<Receipt> {
               rightText,
               style: GoogleFonts.inter(
                 fontWeight: FontWeight.w600,
-                fontSize: fontS,
+                fontSize: fontS.toDouble(),
                 color: const Color.fromARGB(255, 18, 18, 18),
               ),
             ),

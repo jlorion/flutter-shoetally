@@ -18,7 +18,7 @@ class Orders {
       id: orderDoc,
       product_name: data['product_id'],
       productImage: data['productImage'],
-      total_price: data['total_price'],
+      total_price: data['total_price'].toDouble(),
       quantity: data['quantity'],
     );
   }

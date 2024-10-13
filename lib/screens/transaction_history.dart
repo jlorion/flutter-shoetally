@@ -5,6 +5,7 @@ import 'package:commerce_mobile/components/search_field_component.dart';
 import 'package:commerce_mobile/components/transaction_item.dart'; // Import the new transaction item component
 import 'package:commerce_mobile/controllers/Transaction_Contorller.dart';
 import 'package:commerce_mobile/models/TransactionsModel.dart';
+import 'package:commerce_mobile/seeders/transaction_seeder.dart';
 import 'package:flutter/material.dart';
 
 
@@ -15,52 +16,34 @@ class TransactionHistory extends StatefulWidget {
 
 class _TransactionHistoryState extends State<TransactionHistory> {
   List<Transactions> transList = [];
-  final List<Map<String, String>> _transactions = [
-    {
-      'title': 'Century Tuna Ila Bernard',
-      'price': '25,000.00',
-      'dateTime': 'September 29, 2024, 5:00 PM'
-    },
-    {
-      'title': 'Kyle Dellatan',
-      'price': '25,000.00',
-      'dateTime': 'September 29, 2024, 5:00 PM'
-    },
-    {
-      'title': 'Century Tuna Ila Bernard',
-      'price': '25,000.00',
-      'dateTime': 'September 29, 2024, 5:00 PM'
-    },
-    {
-      'title': 'Century Tuna Ila Bernard',
-      'price': '25,000.00',
-      'dateTime': 'September 29, 2024, 5:00 PM'
-    },
-  ];
 
-  List<Map<String, String>> _filteredTransactions = [];
+  List<Transactions> _filteredTransactions = [];
   String _searchText = "";
+  
   transPopulate()async{
     final listthing = await TransactionContorller().getTransactions();
+    // final listthing = TransactionSeeder().transListSeed();
     setState(() {
       transList = listthing;
+      _filteredTransactions = transList;
     });
   }
+
   @override
   void initState() {
     super.initState();
-    _filteredTransactions = _transactions;
     transPopulate();
+
   }
 
   void _filterTransactions(String searchText) {
     setState(() {
       _searchText = searchText;
       if (_searchText.isEmpty) {
-        _filteredTransactions = _transactions;
+        _filteredTransactions = transList;
       } else {
-        _filteredTransactions = _transactions
-            .where((transaction) => transaction['title']!
+        _filteredTransactions = transList
+            .where((transaction) => transaction.customer_name
                 .toLowerCase()
                 .contains(_searchText.toLowerCase()))
             .toList();
@@ -100,9 +83,10 @@ class _TransactionHistoryState extends State<TransactionHistory> {
                       ],
                     ),
                     child: TransactionItemComponent.transactionItem(context,
-                      transaction['title']!,
-                      transaction['price']!,
-                      transaction['dateTime']!,
+                      transaction.customer_name,
+                      transaction.total_amount.toStringAsFixed(2),
+                      transaction.date_time,
+                      transaction
                     ),
                   ),
                 );

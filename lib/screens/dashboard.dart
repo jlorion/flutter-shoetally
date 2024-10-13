@@ -3,6 +3,7 @@ import 'package:commerce_mobile/components/appbar.dart';
 import 'package:commerce_mobile/components/infocard.dart';
 import 'package:commerce_mobile/components/navbar.dart';
 import 'package:commerce_mobile/components/transaction_item.dart';
+import 'package:commerce_mobile/models/TransactionsModel.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -99,6 +100,7 @@ class _DashboardState extends State<Dashboard> {
                     _transactions[index]['title']!,
                     _transactions[index]['price']!,
                     _transactions[index]['dateTime']!,
+                    Transactions(id: '1', customer_name: 'name', total_amount: 12, date_time: 'somethng', user_name: 'ldkajdslf')
                   );
                 },
               ),
