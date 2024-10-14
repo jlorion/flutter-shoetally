@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../components/app_drawer.dart';
-import '../components/appbar.dart';
 
 class TransactionDetails extends StatefulWidget {
   const TransactionDetails({super.key});
@@ -126,7 +125,7 @@ class _TransactionDetailsState extends State<TransactionDetails> {
                 children: [
                   // White receipt container
                   Container(
-                    margin: EdgeInsets.symmetric(horizontal: 50),
+                    margin: EdgeInsets.symmetric(horizontal: 30),
                     width: 365,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
@@ -138,10 +137,9 @@ class _TransactionDetailsState extends State<TransactionDetails> {
                         child: Column(
                           children: [
                             const SizedBox(height: 30),
-                            Icon(
-                              Icons.history_edu,
-                              size: 38,
-                            ),
+                            const Icon(Icons.history_edu,
+                                size: 38,
+                                color: const Color.fromRGBO(108, 58, 172, 100)),
                             const SizedBox(height: 15),
                             Text(
                               'Order to',
@@ -159,11 +157,22 @@ class _TransactionDetailsState extends State<TransactionDetails> {
                                 color: const Color.fromRGBO(108, 58, 172, 100),
                               ),
                             ),
-                            const SizedBox(height: 25),
+                            const SizedBox(height: 15),
+                            Text(
+                              'RN: ${trans?.id}',
+                              style: GoogleFonts.inter(
+                                fontWeight: FontWeight.w400,
+                                fontSize: 15,
+                                color: const Color.fromRGBO(108, 58, 172, 100),
+                              ),
+                            ),
+
+                            // const SizedBox(height: 25),
                             Divider(color: Colors.grey.shade300, thickness: 1),
-                            const SizedBox(height: 25),
-                            receiptTextDetail(
-                                'Reference Number', trans?.id, 10),
+
+                            const SizedBox(height: 15),
+                            receiptTextDetail('User',
+                                trans?.user_name.split(' ')[0] ?? "", 15),
                             const SizedBox(height: 15),
                             receiptTextDetail('Date',
                                 trans?.date_time.split(' ')[0] ?? "", 15),
@@ -179,7 +188,7 @@ class _TransactionDetailsState extends State<TransactionDetails> {
                             receiptTextDetail(
                                 'Amount',
                                 'PHP ${trans?.total_amount.toStringAsFixed(2) ?? ""}',
-                                20),
+                                15),
                             const SizedBox(height: 20),
                             Divider(color: Colors.grey.shade300, thickness: 1),
                             const SizedBox(height: 20),
@@ -197,7 +206,8 @@ class _TransactionDetailsState extends State<TransactionDetails> {
                                     .map((order) => productsListTextDetail(
                                         order.quantity.toString(),
                                         order.product_name,
-                                        (order.total_price * order.quantity).toStringAsFixed(2),
+                                        (order.total_price * order.quantity)
+                                            .toStringAsFixed(2),
                                         12))
                                     .toList())
                             // Add more items here if needed

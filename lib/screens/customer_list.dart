@@ -10,7 +10,6 @@ import 'package:commerce_mobile/components/buttonIcon.dart';
 import 'package:commerce_mobile/components/navbar.dart';
 import 'package:toastification/toastification.dart';
 import 'edit_customer.dart'; // Import the EditCustomer page
-import 'package:cloud_firestore/cloud_firestore.dart'; // Firestore import
 
 class CustomerList extends StatefulWidget {
   const CustomerList({super.key});

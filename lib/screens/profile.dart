@@ -8,6 +8,7 @@ import 'package:commerce_mobile/components/appbar.dart';
 import 'package:commerce_mobile/components/circle_avatar_component.dart';
 import 'package:commerce_mobile/components/navbar.dart';
 
+// ignore: must_be_immutable
 class UserProfilePage extends StatelessWidget {
   UserController userController = UserController();
 

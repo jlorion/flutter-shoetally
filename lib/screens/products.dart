@@ -7,9 +7,7 @@ import 'package:commerce_mobile/components/productcard.dart';
 import 'package:commerce_mobile/components/search_component.dart';
 import 'package:commerce_mobile/controllers/Product_Controllers.dart';
 import 'package:commerce_mobile/models/ProductsModel.dart';
-import 'package:commerce_mobile/services/storage_service.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class Products extends StatefulWidget {
   @override
@@ -49,7 +47,7 @@ class _ProductsState extends State<Products> {
         // Perform filtering
         _filteredTransactions = _allProducts
             .where((product) =>
-                product.name!.toLowerCase().contains(_searchText.toLowerCase()))
+                product.name.toLowerCase().contains(_searchText.toLowerCase()))
             .toList();
       }
     });

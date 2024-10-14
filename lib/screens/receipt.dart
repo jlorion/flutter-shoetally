@@ -1,9 +1,6 @@
-import 'package:commerce_mobile/components/back_button_component.dart';
-import 'package:commerce_mobile/components/custom_button.dart';
 import 'package:commerce_mobile/models/TransactionsModel.dart';
 import 'package:commerce_mobile/screens/dashboard.dart';
 import 'package:commerce_mobile/screens/orders.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -151,7 +148,7 @@ class _ReceiptState extends State<Receipt> {
                       children: [
                         // White receipt container
                         Container(
-                          margin: EdgeInsets.symmetric(horizontal: 50),
+                          margin: EdgeInsets.symmetric(horizontal: 30),
                           width: 365,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
@@ -184,7 +181,17 @@ class _ReceiptState extends State<Receipt> {
                                       fontWeight: FontWeight.w600,
                                     ),
                                   ),
-                                  const SizedBox(height: 25),
+                                  const SizedBox(height: 15),
+                                  Text(
+                                    'RN: ${widget.stringId}',
+                                    style: GoogleFonts.inter(
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 15,
+                                      color: const Color.fromRGBO(
+                                          108, 58, 172, 100),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 15),
                                   Container(
                                     margin: const EdgeInsets.symmetric(
                                         horizontal: 16.0),
@@ -193,10 +200,10 @@ class _ReceiptState extends State<Receipt> {
                                       thickness: 1,
                                     ),
                                   ),
-                                  const SizedBox(height: 25),
-                                  receiptTextDetail(
-                                      'Reference Number', widget.stringId, 15),
                                   const SizedBox(height: 15),
+                                  // receiptTextDetail(
+                                  //     'Reference ID', widget.stringId, 15),
+
                                   receiptTextDetail('Date',
                                       widget.trans.date_time.split(" ")[0], 15),
                                   const SizedBox(height: 15),
@@ -215,8 +222,10 @@ class _ReceiptState extends State<Receipt> {
                                     ),
                                   ),
                                   const SizedBox(height: 20),
-                                  receiptTextDetail('Amount',
-                                      widget.total_amount.toString(), 20),
+                                  receiptTextDetail(
+                                      'Amount',
+                                      '₱ ${widget.total_amount.toString()}',
+                                      20),
                                   const SizedBox(height: 20),
                                 ],
                               ),
@@ -225,7 +234,7 @@ class _ReceiptState extends State<Receipt> {
                         ),
                         // Small circle between white container and background
                         Positioned(
-                          left: 40,
+                          left: 20,
                           bottom:
                               330, // Adjust this based on where you want the circle to appear
                           child: Container(
@@ -240,7 +249,7 @@ class _ReceiptState extends State<Receipt> {
                         ),
 
                         Positioned(
-                          right: 40,
+                          right: 20,
                           bottom:
                               330, // Adjust this based on where you want the circle to appear
                           child: Container(

@@ -145,6 +145,7 @@ class _EditCustomerState extends State<EditCustomer> {
                             style: ToastificationStyle.flatColored,
                             autoCloseDuration: const Duration(seconds: 5),
                           );
+
                           Navigator.pushNamed(context, '/customer-list');
                         });
                       },

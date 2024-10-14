@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:commerce_mobile/components/app_drawer.dart';
 import 'package:commerce_mobile/components/appbar.dart';
 import 'package:commerce_mobile/components/back_button_component.dart';
@@ -14,7 +13,6 @@ import 'package:commerce_mobile/models/CustomersModel.dart';
 import 'package:commerce_mobile/models/OrdersModel.dart';
 import 'package:commerce_mobile/models/ProductsModel.dart';
 import 'package:commerce_mobile/models/TransactionsModel.dart';
-import 'package:commerce_mobile/models/UserModel.dart';
 import 'package:commerce_mobile/models/UserProfile.dart';
 import 'package:commerce_mobile/screens/receipt.dart';
 import 'package:commerce_mobile/services/authentication/auth_functions.dart';
@@ -186,8 +184,6 @@ class _OrderListPageState extends State<OrderListPage> {
 
                         // Update product quantities after successful transaction
                         for (var orders in _orders) {
-                          print(orders['stock'].toString() + "--- this is the stock");
-                          print(orders['quantity'].toString());
                           await ProductControllers().updateProductStock(orders["productId"], orders['stock']);
                         }
 

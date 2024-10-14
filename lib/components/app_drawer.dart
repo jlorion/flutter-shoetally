@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:commerce_mobile/Wrapper.dart';
 import 'package:commerce_mobile/controllers/userController.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -20,7 +19,6 @@ class _AppDrawerState extends State<AppDrawer> {
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
-          // Remove the 'return' before DrawerHeader
           DrawerHeader(
             decoration: const BoxDecoration(
               color: Color(0xFFA259FF),
@@ -52,26 +50,29 @@ class _AppDrawerState extends State<AppDrawer> {
                         ),
                       ),
                       const SizedBox(width: 16),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            name, // User name
-                            style: GoogleFonts.inter(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              name, // User name
+                              style: GoogleFonts.inter(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
                             ),
-                          ),
-                          Text(
-                            email, // User email or other info
-                            style: GoogleFonts.inter(
-                              fontSize: 14,
-                              color: Colors.white70,
+                            Text(
+                              email, // User email or other info
+                              style: GoogleFonts.inter(
+                                fontSize: 14,
+                                color: Colors.white70,
+                              ),
+                              overflow: TextOverflow.ellipsis,
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ],
                   );
