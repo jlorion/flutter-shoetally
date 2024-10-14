@@ -151,17 +151,16 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           await AuthFunctions().signOut();
                           User? user = await AuthFunctions().getCurrentUser();
 
-                          if (user == null) {
-                            Navigator.of(context).pushNamedAndRemoveUntil(
-                              '/login',
-                              (route) => false,
-                            );
-                          }
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                            '/login',
+                            (route) => false,
+                          );
+                        } else {
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                            '/profile',
+                            (route) => false,
+                          );
                         }
-                        Navigator.of(context).pushNamedAndRemoveUntil(
-                          '/profile',
-                          (route) => false,
-                        );
                       } on Exception {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
