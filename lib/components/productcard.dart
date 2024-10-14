@@ -4,11 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ProductCard extends StatefulWidget {
-  const ProductCard(
-      {super.key, required this.filteredTransactions, required this.index});
+  ProductCard({
+    super.key,
+    required this.filteredTransactions,
+    required this.index,
+    this.titleColor =
+        const Color.fromARGB(255, 98, 54, 155), // Default color value
+  });
 
   final List<Product> filteredTransactions;
   final int index;
+  Color titleColor; // Use final since it's immutable
 
   @override
   State<ProductCard> createState() => _ProductCardState();
@@ -37,7 +43,7 @@ class _ProductCardState extends State<ProductCard> {
           style: GoogleFonts.inter(
             fontSize: 16,
             fontWeight: FontWeight.bold,
-            color: const Color.fromARGB(255, 98, 54, 155),
+            color: widget.titleColor,
           ),
         ),
         subtitle: Text(

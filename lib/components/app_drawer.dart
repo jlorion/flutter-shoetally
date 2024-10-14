@@ -20,7 +20,6 @@ class _AppDrawerState extends State<AppDrawer> {
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
-          // Remove the 'return' before DrawerHeader
           DrawerHeader(
             decoration: const BoxDecoration(
               color: Color(0xFFA259FF),

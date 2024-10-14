@@ -7,6 +7,7 @@ class OrderItemComponent extends StatelessWidget {
   final String shoeName;
   final String stockCount;
   final double profit;
+  final Color titleColor; // Add titleColor parameter
   final VoidCallback onCartPressed;
 
   const OrderItemComponent({
@@ -16,6 +17,7 @@ class OrderItemComponent extends StatelessWidget {
     required this.stockCount,
     required this.profit,
     required this.onCartPressed,
+    this.titleColor = Colors.black, // Default color
   }) : super(key: key);
 
   @override
@@ -48,7 +50,7 @@ class OrderItemComponent extends StatelessWidget {
                   shoeName,
                   style: GoogleFonts.inter(
                     fontSize: 18,
-                    color: Colors.black,
+                    color: titleColor, // Use titleColor here
                     letterSpacing: -0.5,
                   ),
                 ),
@@ -57,7 +59,7 @@ class OrderItemComponent extends StatelessWidget {
                   'Current Stock: $stockCount',
                   style: GoogleFonts.inter(
                     fontSize: 14,
-                    color: const Color(0xFF9586A8),
+                    color: titleColor,
                     letterSpacing: -0.5,
                   ),
                 ),

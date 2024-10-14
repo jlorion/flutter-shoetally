@@ -89,11 +89,25 @@ class _OrderScreenState extends State<OrderScreen> {
               itemCount: _filteredOrders.length,
               itemBuilder: (context, index) {
                 final product = _filteredOrders[index];
+
+                // Determine the title color based on the stock
+                Color titleColor;
+                if (product.product_stock == 0) {
+                  titleColor = Colors.red; // Red for zero stock
+                } else if (product.product_stock < 5) {
+                  titleColor =
+                      Colors.yellow.shade900; // Yellow for less than 5 stock
+                } else {
+                  titleColor =
+                      Colors.black; // Default color for sufficient stock
+                }
+
                 return OrderItemComponent(
                   imageUrl: product.image,
                   shoeName: product.name,
                   profit: product.profit,
                   stockCount: product.product_stock.toString(),
+                  titleColor: titleColor, // Pass the determined color
                   onCartPressed: () {
                     if (product.product_stock <= 0) {
                       toastification.show(
@@ -101,7 +115,9 @@ class _OrderScreenState extends State<OrderScreen> {
                         title: Text(
                           'Insufficient Stocks',
                           style: TextStyle(
-                              fontWeight: FontWeight.bold, color: Colors.red),
+                            fontWeight: FontWeight.bold,
+                            color: Colors.red,
+                          ),
                         ),
                         description: Text('${product.name} needs restocking.'),
                         borderRadius: BorderRadius.circular(10),
