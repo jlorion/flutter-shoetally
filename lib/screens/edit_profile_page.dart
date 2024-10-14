@@ -147,6 +147,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             const SnackBar(
                                 content: Text('Change password successfully!')),
                           );
+
                           await AuthFunctions().signOut();
                           User? user = await AuthFunctions().getCurrentUser();
 
@@ -157,6 +158,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             );
                           }
                         }
+                        Navigator.of(context).pushNamedAndRemoveUntil(
+                          '/profile',
+                          (route) => false,
+                        );
                       } on Exception {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
