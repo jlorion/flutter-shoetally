@@ -35,12 +35,10 @@ class _ProductCardState extends State<ProductCard> {
                       filteredTransactions: widget.filteredTransactions,
                       index: widget.index,
                     )));
-        print(
-            'InkWell tapped! ${widget.filteredTransactions[widget.index].name}');
       },
       child: ListTile(
         title: Text(
-          widget.filteredTransactions[widget.index].name!,
+          widget.filteredTransactions[widget.index].name,
           style: GoogleFonts.inter(
             fontSize: 16,
             fontWeight: FontWeight.bold,

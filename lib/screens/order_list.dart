@@ -184,8 +184,6 @@ class _OrderListPageState extends State<OrderListPage> {
 
                         // Update product quantities after successful transaction
                         for (var orders in _orders) {
-                          print(orders['stock'].toString() + "--- this is the stock");
-                          print(orders['quantity'].toString());
                           await ProductControllers().updateProductStock(orders["productId"], orders['stock']);
                         }
 

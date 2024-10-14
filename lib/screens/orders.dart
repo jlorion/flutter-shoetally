@@ -129,7 +129,6 @@ class _OrderScreenState extends State<OrderScreen> {
                       setState(() {
                         if (!chosenProducts.contains(product)) {
                           chosenProducts.add(product);
-                          print(chosenProducts.length);
                         } else {
                           print("product already on cart");
                         }
