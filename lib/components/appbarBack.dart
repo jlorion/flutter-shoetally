@@ -26,7 +26,7 @@ class CustomAppBarBack extends StatelessWidget implements PreferredSizeWidget {
       leading: IconButton(
         icon: const Icon(Icons.arrow_back_rounded),
         onPressed: () {
-          Navigator.push(
+          Navigator.pop(
             context,
             MaterialPageRoute(
               builder: (context) => TransactionHistory(),

@@ -30,7 +30,7 @@ void main() async {
   if (!kIsWeb) {
     FirebaseFirestore.instance.settings = const Settings(persistenceEnabled: true);
   }
-  
+  // hasdkjhaksjdhkajshdasd
   runApp(
     ChangeNotifierProvider(
       create: (context) => StorageService(),
