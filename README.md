@@ -1,10 +1,38 @@
-# ShoeTally
+GitHub Link: https://github.com/jlorion/flutter-shoetally 
+## Title of the system: ShoeTally: A Shoe Inventory System
 
-A nwe Flutter project.
+## Members: 
+John Kyle Dellatan
+Mc Bernard Logronio
+Raniel Art Montebon
+Josef Leonard Orion
+John Rey Reyes
 
-##Getting Started
 
-1. fork this repo
-2. clone from your fork
-3. use command "flutter pub get"
-4. if dili mugana then get fucked
+## Description 
+
+ShoeTally is an inventory management shoe type application designed for shoe distributors who resell with retail stores. This not only aids users in tracking and managing shoe inventory with ease by making provision for adding products but also to place orders, manage customer orders and construct an extensive database on customers. Moreover, you can have a comprehensive list of transactions for registering old ordered orders & financial records. Not only does it feature powerful editing capabilities, but also when information is entered into the system (products or orders and customers), then simply adding/modifying that anytime will update all related fields to keep everything up-to-date.
+
+## General Objective 
+
+Efficiently managing stock levels is essential for meeting client demands while minimizing costs associated with overstocking or stockouts. An effective inventory management system aims to create a balance between supply and demand, ensuring the right shoes are available at the right time. By closely monitoring inventory levels and adjusting them based on sales trends, seasonal fluctuations, and customer preferences, distributors can maintain optimal stock levels. Tracking inventory in real time provides immediate insights into stock availability, allowing for timely decision-making that prevents issues related to excess inventory or missed sales opportunities. This proactive approach enhances supply chain operations by enabling distributors to analyze data on popular styles and sizes, facilitating informed reordering and restocking decisions. Optimizing inventory turnover not only improves sales performance but also increases customer satisfaction, as clients are more likely to find the products they want when needed. Additionally, a well-managed inventory system contributes to better forecasting and planning, helping businesses anticipate demand changes and adjust their strategies accordingly. This capability aids in tracking profit while building a responsive and agile supply chain. By prioritizing inventory efficiency, businesses can boost sales and enhance customer experiences simultaneously.
+
+## Specific Objectives
+
+To streamline the process of adding, updating, and managing shoe inventory by allowing middleman distributors to maintain real-time control over stock levels
+To facilitate order management by enabling the tracking, processing, and fulfillment of customer orders from retail stores.
+To provide accurate and detailed customer records by building a robust customer database with order histories and contact information for better relationship management.
+To offer a comprehensive transaction history that records all previous orders and financial transactions, allowing for detailed audits and performance reviews.
+To allow seamless modification of product, order, and customer information across the system, ensuring that updates in one area reflect throughout all related fields.
+To minimize inventory management error and reduce operational costs related to stock discrepancies, overstocking, and stockouts.
+## Scope: 
+ShoeTally is a versatile and effective cross-platform shoe inventory management system designed to optimize the operations of middleman distributors, focusing particularly on getting retail stores up and running efficiently. Developed using Flutter and powered by Firebase, this innovative system enhances inventory management while providing a user-friendly experience for all stakeholders involved. One of the standout features of ShoeTally is its Product Management capability, which allows users to easily add, edit, and manage shoe products. Each product can be detailed with specific attributes, including quantity, available sizes, and descriptions, ensuring that distributors have comprehensive control over their inventory.
+In addition to managing products, ShoeTally also excels in Order Processing. The system facilitates seamless order placement, enabling distributors to send orders directly to retail customers. It also includes features for tracking the fulfillment of these orders, ensuring that all parties are kept informed throughout the process. To further enhance operational efficiency, ShoeTally boasts an extensive Customer Database. This database includes a complete list of customers, along with their contact information and order histories, allowing distributors to maintain strong relationships and provide personalized service.
+Moreover, ShoeTally keeps a meticulous Transaction History, offering detailed records of previous orders and other transactions. This feature not only aids in auditing but also helps users review their business activities over time, promoting transparency and accountability. The system also includes a Data Editing feature, which allows users to make necessary changes to product details, customer information, or order specifics. This flexibility is crucial for maintaining accurate records and responding to any discrepancies promptly.
+By utilizing Firebase, ShoeTally ensures real-time data synchronization, secure storage, and excellent scalability. Firebase's architecture allows ShoeTally to grow alongside the business, accommodating increasing data loads and user demands without compromising performance. Flutter’s framework enables the same codebase to function seamlessly across multiple platforms, including both Android and iOS. This means users can enjoy a consistent and efficient experience, regardless of the device they are using. Overall, ShoeTally is a comprehensive solution for shoe inventory management that enhances operational efficiency, scalability, and the overall customer experience.
+
+## Limitations:
+ShoeTally, while an effective tool for shoe inventory management, does have some limitations that users should consider. First, the Industry-Specific Design of the system means it is tailored specifically for shoe distribution businesses. Consequently, the features may require customization to be effectively utilized in other industries, potentially limiting its versatility for broader applications.
+Another limitation is the need for Manual Inventory Updates. Despite the powerful capabilities of Firebase in handling real-time data, the app relies on stock updates that must be manually entered into the system. This means that there is no automatic prompting from external systems for inventory changes, which can lead to potential discrepancies and increased administrative effort. Additionally, ShoeTally is Not Directly Customer Facing. The app is designed for internal use by distributors and does not offer a retail customer-facing interface. This means that customers cannot view their orders or engage in self-service, which could limit customer interaction and satisfaction.
+The system also has Limited Integration with Third-Party Systems. ShoeTally does not natively connect to third-party accounting or enterprise resource planning (ERP) systems. As a result, financial reporting and inventory management must be handled separately, which can complicate overall business processes and data management. Lastly, while Firebase supports user authentication, the current version of ShoeTally features single-user authentication. This means it may lack multi-user role management, restricting wide cooperation among team members without further configuration. This limitation can hinder collaborative efforts and workflow efficiency within distribution teams. Overall, while ShoeTally offers a comprehensive solution for shoe inventory management, these limitations should be carefully considered to ensure it meets the specific needs of the business.
+
