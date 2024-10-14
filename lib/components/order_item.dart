@@ -6,6 +6,7 @@ class OrderItemComponent extends StatelessWidget {
   final String imageUrl;
   final String shoeName;
   final String stockCount;
+  final double profit;
   final VoidCallback onCartPressed;
 
   const OrderItemComponent({
@@ -13,6 +14,7 @@ class OrderItemComponent extends StatelessWidget {
     required this.imageUrl,
     required this.shoeName,
     required this.stockCount,
+    required this.profit,
     required this.onCartPressed,
   }) : super(key: key);
 
@@ -66,12 +68,11 @@ class OrderItemComponent extends StatelessWidget {
                     width: 80,
                     decoration: BoxDecoration(
                       color: const Color(0xFFA259FF), // Purple background
-                      borderRadius: BorderRadius.circular(
-                          7), 
+                      borderRadius: BorderRadius.circular(7),
                     ),
                     child: IconButton(
                       icon: const Icon(Icons.shopping_cart_outlined,
-                          color: Colors.white, size: 20), 
+                          color: Colors.white, size: 20),
                       onPressed: onCartPressed,
                     ),
                   ),

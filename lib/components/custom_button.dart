@@ -3,18 +3,19 @@ import 'package:flutter/material.dart';
 class CustomButton extends StatelessWidget {
   final VoidCallback onPressed;
   final String text;
-
-  const CustomButton({
-    Key? key,
-    required this.onPressed,
-    required this.text,
-  }) : super(key: key);
+  final bool isEnabled;
+  const CustomButton(
+      {Key? key,
+      required this.onPressed,
+      required this.text,
+      this.isEnabled = true})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: onPressed,
-      style: CustomButtonStyle.elevatedButtonStyle(),
+      style: CustomButtonStyle.elevatedButtonStyle(isEnabled),
       child: Text(
         text,
         style: const TextStyle(
@@ -27,10 +28,12 @@ class CustomButton extends StatelessWidget {
 }
 
 class CustomButtonStyle {
-  static ButtonStyle elevatedButtonStyle() {
+  static ButtonStyle elevatedButtonStyle(bool isEnabled) {
     return ElevatedButton.styleFrom(
       foregroundColor: Colors.white,
-      backgroundColor: const Color(0xFFA259FF),
+      backgroundColor: isEnabled
+          ? const Color(0xFFA259FF)
+          : Colors.grey, // Use the parameter
       minimumSize: const Size.fromHeight(60),
       elevation: 0,
       shape: RoundedRectangleBorder(

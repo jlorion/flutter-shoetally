@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:commerce_mobile/components/appbarBack.dart';
 import 'package:commerce_mobile/controllers/Transaction_Contorller.dart';
 import 'package:commerce_mobile/models/OrdersModel.dart';
@@ -34,7 +32,7 @@ class _TransactionDetailsState extends State<TransactionDetails> {
               ),
             ),
             Text(
-              rightText??'',
+              rightText ?? '',
               style: GoogleFonts.inter(
                 fontWeight: FontWeight.w600,
                 fontSize: fontS.toDouble(),
@@ -45,7 +43,8 @@ class _TransactionDetailsState extends State<TransactionDetails> {
         ),
       );
 
-  Widget productsListTextDetail(quantity, productName, price, int fontS) => Padding(
+  Widget productsListTextDetail(quantity, productName, price, int fontS) =>
+      Padding(
         padding: const EdgeInsets.symmetric(horizontal: 19.0),
         child: Row(
           children: [
@@ -84,8 +83,8 @@ class _TransactionDetailsState extends State<TransactionDetails> {
       style: GoogleFonts.inter(
         fontWeight: FontWeight.w600,
       ));
-  
-  currentTrans(){
+
+  currentTrans() {
     final args = ModalRoute.of(context)!.settings.arguments;
     setState(() {
       trans = args as Transactions;
@@ -93,26 +92,22 @@ class _TransactionDetailsState extends State<TransactionDetails> {
     populateOrders();
   }
 
-  populateOrders()async{
+  populateOrders() async {
     if (trans?.id != null) {
       final prods = await TransactionContorller().getOrders(trans!.id);
       setState(() {
         orders = prods;
       });
     }
-    
   }
-  
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_)=> currentTrans());
+    WidgetsBinding.instance.addPostFrameCallback((_) => currentTrans());
     populateOrders();
-
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -170,16 +165,21 @@ class _TransactionDetailsState extends State<TransactionDetails> {
                             receiptTextDetail(
                                 'Reference Number', trans?.id, 10),
                             const SizedBox(height: 15),
-                            receiptTextDetail('Date', trans?.date_time.split(' ')[0]??"", 15),
+                            receiptTextDetail('Date',
+                                trans?.date_time.split(' ')[0] ?? "", 15),
                             const SizedBox(height: 15),
-                            receiptTextDetail('Time', trans?.date_time.split(" ")[1]??"", 15),
+                            receiptTextDetail('Time',
+                                trans?.date_time.split(" ")[1] ?? "", 15),
                             const SizedBox(height: 15),
                             receiptTextDetail(
                                 'Payment Method', 'Credit Card', 15),
                             const SizedBox(height: 15),
                             Divider(color: Colors.grey.shade300, thickness: 1),
                             const SizedBox(height: 20),
-                            receiptTextDetail('Amount', 'PHP ${trans?.total_amount.toStringAsFixed(2)??""}', 20),
+                            receiptTextDetail(
+                                'Amount',
+                                'PHP ${trans?.total_amount.toStringAsFixed(2) ?? ""}',
+                                20),
                             const SizedBox(height: 20),
                             Divider(color: Colors.grey.shade300, thickness: 1),
                             const SizedBox(height: 20),
@@ -193,11 +193,13 @@ class _TransactionDetailsState extends State<TransactionDetails> {
                             const SizedBox(height: 25),
                             // Product List
                             Column(
-                                children: orders.map((order) =>productsListTextDetail(
-                                  order.quantity.toString(), 
-                                  order.product_name, 
-                                  order.total_price.toStringAsFixed(2), 12)).toList()
-                            )
+                                children: orders
+                                    .map((order) => productsListTextDetail(
+                                        order.quantity.toString(),
+                                        order.product_name,
+                                        order.total_price.toStringAsFixed(2),
+                                        12))
+                                    .toList())
                             // Add more items here if needed
                           ],
                         ),

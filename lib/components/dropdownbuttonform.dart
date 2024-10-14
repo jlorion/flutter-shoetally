@@ -24,10 +24,7 @@ class DropdownField extends StatefulWidget {
 }
 
 class _DropdownFieldState extends State<DropdownField> {
-  String? _currentValue; 
-
-  
-  
+  String? _currentValue;
 
   @override
   void initState() {

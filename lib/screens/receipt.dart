@@ -9,7 +9,8 @@ import 'package:google_fonts/google_fonts.dart';
 class Receipt extends StatefulWidget {
   final stringId;
   final total_amount;
-  const Receipt({super.key, required this.stringId, required this.total_amount});
+  const Receipt(
+      {super.key, required this.stringId, required this.total_amount});
 
   @override
   State<Receipt> createState() => _ReceiptState();
@@ -177,8 +178,6 @@ class _ReceiptState extends State<Receipt> {
                                   ),
                                 ),
                                 const SizedBox(height: 25),
-
-                                
                                 Container(
                                   margin: const EdgeInsets.symmetric(
                                       horizontal: 16.0),
@@ -191,9 +190,11 @@ class _ReceiptState extends State<Receipt> {
                                 receiptTextDetail(
                                     'Reference Number', widget.stringId, 15),
                                 const SizedBox(height: 15),
-                                receiptTextDetail('Date', DateTime.now().toString() , 15),
+                                receiptTextDetail(
+                                    'Date', DateTime.now().toString(), 15),
                                 const SizedBox(height: 15),
-                                receiptTextDetail('Time', TimeOfDay.now().toString(), 15),
+                                receiptTextDetail(
+                                    'Time', TimeOfDay.now().toString(), 15),
                                 const SizedBox(height: 15),
                                 receiptTextDetail(
                                     'Payment Method', 'Credit Card', 15),
@@ -207,7 +208,8 @@ class _ReceiptState extends State<Receipt> {
                                   ),
                                 ),
                                 const SizedBox(height: 20),
-                                receiptTextDetail('Amount', widget.total_amount.toString(), 20),
+                                receiptTextDetail('Amount',
+                                    widget.total_amount.toString(), 20),
                                 const SizedBox(height: 20),
                                 Container(
                                   margin: const EdgeInsets.symmetric(
@@ -263,8 +265,6 @@ class _ReceiptState extends State<Receipt> {
                             ),
                           ),
                         ),
-
-
                       ],
                     ),
                     const SizedBox(height: 65),

@@ -20,28 +20,28 @@ class _AppDrawerState extends State<AppDrawer> {
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
-          // Remove the 'return' before DrawerHeader
-          DrawerHeader(
-            decoration: const BoxDecoration(
-              color: Color(0xFFA259FF),
-            ),
-            margin: EdgeInsets.zero,
-            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
-            child: FutureBuilder<DocumentSnapshot>(
-              future: userController.getUserData(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (snapshot.hasError) {
-                  return const Center(child: Text('Error loading data'));
-                } else if (!snapshot.hasData || snapshot.data == null) {
-                  return const Center(child: Text('No user data available'));
-                } else {
-                  var userData = snapshot.data!.data() as Map<String, dynamic>;
-                  String name = userData['name'] ?? 'No name';
-                  String email = userData['email'] ?? 'No email';
-                  // Now properly returning the Row widget
-                  return Row(
+          FutureBuilder<DocumentSnapshot>(
+            future: userController.getUserData(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError) {
+                return const Center(child: Text('Error loading data'));
+              } else if (!snapshot.hasData || snapshot.data == null) {
+                return const Center(child: Text('No user data available'));
+              } else {
+                var userData = snapshot.data!.data() as Map<String, dynamic>;
+                String name = userData['name'] ?? 'No name';
+                String email = userData['email'] ?? 'No email';
+                // Return DrawerHeader directly instead of wrapping it in another ListView
+                return DrawerHeader(
+                  decoration: const BoxDecoration(
+                    color: Color(0xFFA259FF),
+                  ),
+                  margin: EdgeInsets.zero,
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+                  child: Row(
                     children: [
                       const CircleAvatar(
                         radius: 25, // Adjust size of avatar
@@ -74,10 +74,10 @@ class _AppDrawerState extends State<AppDrawer> {
                         ],
                       ),
                     ],
-                  );
-                }
-              },
-            ),
+                  ),
+                );
+              }
+            },
           ),
           // Other ListTiles for navigation
           ListTile(

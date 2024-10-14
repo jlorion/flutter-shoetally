@@ -2,11 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:commerce_mobile/components/app_drawer.dart';
 import 'package:commerce_mobile/components/appbar.dart';
 import 'package:commerce_mobile/components/back_button_component.dart';
-import 'package:commerce_mobile/components/custom_button.dart';
+import 'package:commerce_mobile/components/custom_button.dart'; // Ensure this path is correct
 import 'package:commerce_mobile/components/dropdownbuttonform.dart';
 import 'package:commerce_mobile/components/encapsulation.dart';
 import 'package:commerce_mobile/components/navbar.dart';
-import 'package:commerce_mobile/components/current_order.dart'; // Import your new component
+import 'package:commerce_mobile/components/current_order.dart';
 import 'package:commerce_mobile/controllers/Transaction_Contorller.dart';
 import 'package:commerce_mobile/controllers/customerController.dart';
 import 'package:commerce_mobile/models/CustomersModel.dart';
@@ -20,50 +20,51 @@ import 'package:commerce_mobile/services/authentication/auth_functions.dart';
 import 'package:commerce_mobile/services/authentication/authentication.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:toastification/toastification.dart';
 
 class OrderListPage extends StatefulWidget {
-  OrderListPage({Key? key,}) : super(key: key);
+  OrderListPage({Key? key}) : super(key: key);
 
   @override
   State<OrderListPage> createState() => _OrderListPageState();
-
 }
 
 class _OrderListPageState extends State<OrderListPage> {
   User? user;
   Userprofile? userprofile;
-
-
   List<Map<String, dynamic>> _orders = [];
   List<Customers> customerList = [];
   Encapsulation productName = Encapsulation();
-  // final user = FirebaseAuth.instance.currentUser;
-  // User userAcc = await FirebaseFirestore.instance.collection('users').doc(user?.uid).get();
+
+  bool customerError = false;
+
   Future<void> _loadUserData() async {
-    //
     user = await AuthFunctions().getCurrentUser();
     if (user != null) {
-      final profile = await AuthenticationService()
-          .getUserProfile(user); // Await and pass the user instance
-      print(profile?.name);
+      final profile = await AuthenticationService().getUserProfile(user);
       setState(() {
         userprofile = profile;
-      }); // Trigger UI update
+      });
     }
   }
 
-  void populateCustomer() async{
+  void populateCustomer() async {
     final customers = await CustomerController().getAllCustomers();
     setState(() {
       customerList = customers;
     });
   }
 
-  // Calculate the subtotal based on orders with a quantity > 0
   double _getSubtotal() {
     return _orders
         .where((item) => item['quantity'] > 0)
         .fold(0, (sum, item) => sum + item['price'] * item['quantity']);
+  }
+
+  double _getTotalProfit() {
+    return _orders.fold(0.0, (sum, item) {
+      return sum + (item['profit'] * item['quantity']);
+    });
   }
 
   double _getTax() {
@@ -79,8 +80,6 @@ class _OrderListPageState extends State<OrderListPage> {
   }
 
   void _increaseQuantity(int index) {
-    print(_orders[index]['quantity']);
-    print(_orders[index]['stock']);
     if (_orders[index]['quantity'] < _orders[index]['stock']) {
       setState(() {
         _orders[index]['quantity'] += 1;
@@ -89,14 +88,11 @@ class _OrderListPageState extends State<OrderListPage> {
   }
 
   void _decreaseQuantity(int index) {
-    if (_orders[index]['quantity'] < _orders[index]['stock']) {
-      setState(() {
-        if (_orders[index]['quantity'] > 1) {
-          _orders[index]['quantity'] -= 1;
-        }
-      });
-      
-    }
+    setState(() {
+      if (_orders[index]['quantity'] > 1) {
+        _orders[index]['quantity'] -= 1;
+      }
+    });
   }
 
   void _removeItem(int index) {
@@ -104,37 +100,168 @@ class _OrderListPageState extends State<OrderListPage> {
       _orders.removeAt(index);
     });
   }
+
+  void _validateAndSubmit() {
+    setState(() {
+      customerError = productName.text?.isEmpty ?? true;
+    });
+
+    if (!customerError) {
+      showConfirmationDialog(context);
+    } else {
+      toastification.show(
+        context: context,
+        title: Text(
+          'Validation Error',
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
+        ),
+        description: Text('Please fill out all fields.'),
+        borderRadius: BorderRadius.circular(10),
+        icon: Icon(Icons.error_outline, color: Colors.red),
+        type: ToastificationType.error,
+        style: ToastificationStyle.flatColored,
+        autoCloseDuration: const Duration(seconds: 5),
+      );
+    }
+  }
+
+  Future<void> updateProductQuantities() async {
+    for (var order in _orders) {
+      String productId = order['productId'];
+      int quantitySold = order['quantity'];
+
+      DocumentReference productRef =
+          FirebaseFirestore.instance.collection('products').doc(productId);
+
+      await FirebaseFirestore.instance.runTransaction((transaction) async {
+        DocumentSnapshot snapshot = await transaction.get(productRef);
+
+        if (!snapshot.exists) {
+          throw Exception("Product does not exist!");
+        }
+
+        int currentStock = snapshot['product_stock'];
+        if (currentStock < quantitySold) {
+          throw Exception("Not enough stock!");
+        }
+
+        int newStock = currentStock - quantitySold;
+
+        transaction.update(productRef, {'product_stock': newStock});
+      });
+    }
+  }
+
+  Future<void> showConfirmationDialog(BuildContext context) {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Container(
+            padding: EdgeInsets.all(20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Text(
+                  'Confirmation',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 16),
+                Text('Are you sure you want to checkout?'),
+                SizedBox(height: 24),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    TextButton(
+                        child: Text('Cancel'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        }),
+                    SizedBox(width: 8),
+                    TextButton(
+                      child: Text('Checkout'),
+                      onPressed: () async {
+                        Transactions trans = Transactions(
+                          id: '',
+                          customer_name: productName.text ?? '',
+                          total_amount: _getTotal(),
+                          total_profit: _getTotalProfit(),
+                          date_time: DateTime.now().toString(),
+                          user_name: userprofile?.name ?? '',
+                        );
+
+                        List<Orders> finalOrders = _orders
+                            .map((prod) => Orders(
+                                  id: '',
+                                  product_name: prod['productName'],
+                                  productImage: prod['imageUrl'],
+                                  total_price: prod['price'],
+                                  quantity: prod['quantity'],
+                                ))
+                            .toList();
+
+                        // Add product function
+                        String id = await TransactionContorller()
+                            .addTransaction(trans, finalOrders);
+
+                        // Update product quantities after successful transaction
+                        await updateProductQuantities();
+
+                        double finalVal = _getTotal();
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                Receipt(stringId: id, total_amount: finalVal),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_)=> populateOrders());
+    WidgetsBinding.instance.addPostFrameCallback((_) => populateOrders());
     populateCustomer();
     _loadUserData();
   }
 
-  
-  void populateOrders() async{
-      final args = ModalRoute.of(context)!.settings.arguments;
-      
-      if (args != null) {
+  void populateOrders() async {
+    final args = ModalRoute.of(context)!.settings.arguments;
+
+    if (args != null) {
       setState(() {
         final list = args as List<Product>;
-        _orders = list.map((product)=> {
-          'imageUrl': product.image,
-          'productName': product.name,
-          'productId': product.id,
-          'price': product.selling_price,
-          'quantity': 1 ,
-          'stock': product.product_stock
-        }).toList();
+        _orders = list
+            .map((product) => {
+                  'imageUrl': product.image,
+                  'productName': product.name,
+                  'productId': product.id,
+                  'price': product.selling_price,
+                  'profit': product.profit, // Include profit here
+                  'quantity': 1,
+                  'stock': product.product_stock
+                })
+            .toList();
       });
-      }
     }
+  }
 
   @override
   Widget build(BuildContext context) {
-    print(_orders);
     return Scaffold(
       appBar: const CustomAppBar(title: "Orders"),
       drawer: const AppDrawer(),
@@ -150,7 +277,7 @@ class _OrderListPageState extends State<OrderListPage> {
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: Colors.purple, // Adjust the color to match the design
+                color: Colors.purple,
               ),
             ),
             const SizedBox(height: 16),
@@ -163,7 +290,7 @@ class _OrderListPageState extends State<OrderListPage> {
                   return CurrentOrder(
                     imageUrl: order['imageUrl'],
                     productName: order['productName'],
-                    productId: order['stock'].toString(),
+                    productId: order['productId'].toString(), // Fix here
                     price: order['price'],
                     quantity: order['quantity'],
                     onIncrease: () => _increaseQuantity(index),
@@ -190,38 +317,39 @@ class _OrderListPageState extends State<OrderListPage> {
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
-            color: Colors.purple, // Adjust to match the design
+            color: Colors.purple,
           ),
         ),
         const SizedBox(height: 16),
-        DropdownField(label: 'Customer', hintText: 'customer name', items: customerList.map((x)=> x.name).toList(), selectedValue: productName),
+        DropdownField(
+          label: 'Customer',
+          hintText: 'customer name',
+          items: customerList.map((x) => x.name).toList(),
+          selectedValue: productName,
+          borderColor: customerError ? Colors.red : Colors.black26,
+        ),
         const SizedBox(height: 16),
         _buildSummaryRow(
             'Subtotal', 'PHP ${_getSubtotal().toStringAsFixed(2)}'),
         _buildSummaryRow(
             'Estimated Tax', 'PHP ${_getTax().toStringAsFixed(2)}'),
-        _buildSummaryRow('Estimated shipping & Handling',
+        _buildSummaryRow('Estimated Shipping & Handling',
             'PHP ${_getShipping().toStringAsFixed(2)}'),
-        const SizedBox(height: 16),
-        _buildSummaryRow(
-          'Total',
-          'PHP ${_getTotal().toStringAsFixed(2)}',
-          isBold: true,
-        ),
+
+        _buildSummaryRow('Total Profit',
+            'PHP ${_getTotalProfit().toStringAsFixed(2)}'), // Display total profit here
+
+        _buildSummaryRow('Total', 'PHP ${_getTotal().toStringAsFixed(2)}',
+            isBold: true),
         const SizedBox(height: 16),
         CustomButton(
-          onPressed: () async{
-            Transactions trans = Transactions(id: '', customer_name: productName.text??'', total_amount: _getTotal(), date_time: DateTime.now().toString(), user_name: userprofile?.name??'');
-            List<Orders> finalOrders = _orders.map((prod)=> Orders(id: '', product_name: prod['productName'], productImage: prod['imageUrl'], total_price: prod['price'], quantity: prod['quantity'])).toList();
-            // add product function
-            String id = await TransactionContorller().addTransaction(trans, finalOrders);
-            double finalVal = _getTotal();
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => Receipt(stringId: id, total_amount: finalVal)),
-            );
-          },
+          onPressed: _orders.isEmpty
+              ? () {}
+              : () {
+                  _validateAndSubmit();
+                },
           text: 'Checkout',
+          isEnabled: _orders.isNotEmpty,
         ),
       ],
     );

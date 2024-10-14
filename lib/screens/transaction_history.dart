@@ -2,12 +2,11 @@ import 'package:commerce_mobile/components/app_drawer.dart';
 import 'package:commerce_mobile/components/appbar.dart';
 import 'package:commerce_mobile/components/navbar.dart';
 import 'package:commerce_mobile/components/search_field_component.dart';
-import 'package:commerce_mobile/components/transaction_item.dart'; // Import the new transaction item component
+import 'package:commerce_mobile/components/transaction_item.dart';
 import 'package:commerce_mobile/controllers/Transaction_Contorller.dart';
 import 'package:commerce_mobile/models/TransactionsModel.dart';
 import 'package:commerce_mobile/seeders/transaction_seeder.dart';
 import 'package:flutter/material.dart';
-
 
 class TransactionHistory extends StatefulWidget {
   @override
@@ -16,15 +15,18 @@ class TransactionHistory extends StatefulWidget {
 
 class _TransactionHistoryState extends State<TransactionHistory> {
   List<Transactions> transList = [];
-
   List<Transactions> _filteredTransactions = [];
   String _searchText = "";
-  
-  transPopulate()async{
+
+  transPopulate() async {
     final listthing = await TransactionContorller().getTransactions();
     // final listthing = TransactionSeeder().transListSeed();
     setState(() {
       transList = listthing;
+
+      // Sort transactions by date in descending order
+      transList.sort((a, b) => b.date_time.compareTo(a.date_time));
+
       _filteredTransactions = transList;
     });
   }
@@ -33,7 +35,6 @@ class _TransactionHistoryState extends State<TransactionHistory> {
   void initState() {
     super.initState();
     transPopulate();
-
   }
 
   void _filterTransactions(String searchText) {
@@ -82,11 +83,12 @@ class _TransactionHistoryState extends State<TransactionHistory> {
                         ),
                       ],
                     ),
-                    child: TransactionItemComponent.transactionItem(context,
+                    child: TransactionItemComponent.transactionItem(
+                      context,
                       transaction.customer_name,
                       transaction.total_amount.toStringAsFixed(2),
                       transaction.date_time,
-                      transaction
+                      transaction,
                     ),
                   ),
                 );

@@ -67,7 +67,7 @@ class _EditProductState extends State<EditProduct> {
         '${widget.filteredTransactions[widget.index].category}';
     preImage = widget.filteredTransactions[widget.index].image;
     stringid = widget.filteredTransactions[widget.index].id;
-        '${widget.filteredTransactions[widget.index].category}';
+    '${widget.filteredTransactions[widget.index].category}';
     preImage = widget.filteredTransactions[widget.index].image;
     stringid = widget.filteredTransactions[widget.index].id;
 
@@ -95,7 +95,6 @@ class _EditProductState extends State<EditProduct> {
   String? _selectedFile;
 
   // Function to handle file picking
-
 
   @override
   Widget build(BuildContext context) {
@@ -200,48 +199,52 @@ class _EditProductState extends State<EditProduct> {
                                       ],
                                     )
                                   : kIsWeb
-                                    ?Image.network(_image!.path)
-                                    :Image.file(File(_image!.path))
-                            ),
+                                      ? Image.network(_image!.path)
+                                      : Image.file(File(_image!.path))),
+                        ),
+                      ),
+                      const SizedBox(height: 30),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 60.0),
+                        child: Center(
+                          child: CustomButton(
+                            onPressed: () async {
+                              String finalImage;
+                              if (_image != null) {
+                                finalImage =
+                                    await storageService.updloadImage(_image);
+                                storageService.deleteImage(preImage);
+                              } else {
+                                finalImage = preImage;
+                              }
+                              await ProductControllers().updateProduct(Product(
+                                id: stringid,
+                                name: productNameTextField.text,
+                                selling_price:
+                                    double.parse(sellingPriceTextField.text),
+                                total_purchase:
+                                    double.parse(totalPurchaseTextField.text),
+                                product_stock:
+                                    int.parse(quantityTextField.text),
+                                category: categoryTextField.text ?? 'shoes',
+                                image: finalImage,
+                                // profit: double.parse(
+                                //         sellingPriceTextField.text) -
+                                //     double.parse(totalPurchaseTextField.text),
+                              ));
+                            },
+                            text: 'Edit Product',
                           ),
                         ),
-                        const SizedBox(height: 30),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 60.0),
-                          child: Center(
-                            child: CustomButton(
-
-                              onPressed: () async{
-                                String finalImage;
-                                if (_image!=null) {
-                                  finalImage = await storageService.updloadImage(_image);
-                                  storageService.deleteImage(preImage);
-                                }else{
-                                  finalImage = preImage;
-                                }
-                                await ProductControllers().updateProduct(
-                                Product(id: stringid, 
-                                name: productNameTextField.text, 
-                                selling_price: double.parse(sellingPriceTextField.text), 
-                                total_purchase: double.parse(totalPurchaseTextField.text), 
-                                product_stock: int.parse(quantityTextField.text), 
-                                category: categoryTextField.text??'shoes', 
-                                image: finalImage)
-                                );
-                              },
-                              text: 'Edit Product',
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
-                ],
-              ),
+                      ),
+                    ],
+                  ),
+                )
+              ],
             ),
           ),
-        );
-      }
-    );
+        ),
+      );
+    });
   }
 }

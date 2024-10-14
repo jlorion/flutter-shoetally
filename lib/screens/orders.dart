@@ -9,6 +9,7 @@ import 'package:commerce_mobile/controllers/Product_Controllers.dart';
 import 'package:commerce_mobile/models/ProductsModel.dart';
 import 'package:commerce_mobile/seeders/product_seeder.dart';
 import 'package:flutter/material.dart';
+import 'package:toastification/toastification.dart';
 
 class OrderScreen extends StatefulWidget {
   const OrderScreen({Key? key}) : super(key: key);
@@ -19,20 +20,21 @@ class OrderScreen extends StatefulWidget {
 
 class _OrderScreenState extends State<OrderScreen> {
   List<Product> products = [];
-  
+
   List<Product> _filteredOrders = [];
   List<Product> chosenProducts = [];
   String _searchText = '';
-  
 
   @override
   void initState() {
     super.initState();
     populateProduct();
   }
-  void populateProduct() async{
+
+  void populateProduct() async {
     final data = await ProductControllers().getProducts();
-    // List<Product> data  = ProductSeeder().productListSeed();
+    // Sort products based on stock count from highest to lowest
+    data.sort((a, b) => b.product_stock.compareTo(a.product_stock));
     setState(() {
       products = data;
       _filteredOrders = products;
@@ -43,16 +45,19 @@ class _OrderScreenState extends State<OrderScreen> {
     setState(() {
       _searchText = searchText;
       if (_searchText.isEmpty) {
+        // Sort the filtered products by stock count as well
         _filteredOrders = products;
       } else {
         _filteredOrders = products
-            .where((product) => product.name
-                .toLowerCase()
-                .contains(_searchText.toLowerCase()))
+            .where((product) =>
+                product.name.toLowerCase().contains(_searchText.toLowerCase()))
             .toList();
+        // Sort filtered products by stock count
+        _filteredOrders
+            .sort((a, b) => b.product_stock.compareTo(a.product_stock));
       }
     });
-  } 
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,14 +76,14 @@ class _OrderScreenState extends State<OrderScreen> {
                 IconButtonComponent(
                   buttonText: 'Order List',
                   onPressed: () {
-                    Navigator.pushNamed(context, '/order-list', arguments: chosenProducts);
+                    Navigator.pushNamed(context, '/order-list',
+                        arguments: chosenProducts);
                   },
                 ),
               ],
             ),
           ),
-           SearchBarComponent(
-              onChanged: _filterOrders), // Add search bar
+          SearchBarComponent(onChanged: _filterOrders), // Add search bar
           Expanded(
             child: ListView.builder(
               itemCount: _filteredOrders.length,
@@ -87,22 +92,39 @@ class _OrderScreenState extends State<OrderScreen> {
                 return OrderItemComponent(
                   imageUrl: product.image,
                   shoeName: product.name,
+                  profit: product.profit,
                   stockCount: product.product_stock.toString(),
                   onCartPressed: () {
-                    setState(() {
-                      if (!chosenProducts.contains(product)) {
-                        chosenProducts.add(product);
-                        print(chosenProducts.length);
-                      }else{
-                        //error thing "product already on cart"
-                        print("product already on cart");
-                      }
-                    });
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Product added to cart'),
-                      ),
-                    );
+                    if (product.product_stock <= 0) {
+                      toastification.show(
+                        context: context,
+                        title: Text(
+                          'Insufficient Stocks',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, color: Colors.red),
+                        ),
+                        description: Text('${product.name} needs restocking.'),
+                        borderRadius: BorderRadius.circular(10),
+                        icon: Icon(Icons.error_outline, color: Colors.red),
+                        type: ToastificationType.error,
+                        style: ToastificationStyle.flatColored,
+                        autoCloseDuration: const Duration(seconds: 5),
+                      );
+                    } else {
+                      setState(() {
+                        if (!chosenProducts.contains(product)) {
+                          chosenProducts.add(product);
+                          print(chosenProducts.length);
+                        } else {
+                          print("product already on cart");
+                        }
+                      });
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Product added to cart'),
+                        ),
+                      );
+                    }
                   },
                 );
               },

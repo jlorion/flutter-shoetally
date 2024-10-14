@@ -56,7 +56,7 @@ class _ImagetestState extends State<Imagetest> {
     return Consumer<StorageService>(
       builder: (context, storageService, widget) => Scaffold(
         floatingActionButton: FloatingActionButton(
-          onPressed: (){},
+          onPressed: () {},
           // onPressed: ()async{ product = await ProductControllers().getProducts(); print(product[0].name);},
           child: const Icon(Icons.add),
         ),
@@ -119,16 +119,17 @@ class _ImagetestState extends State<Imagetest> {
             ),
             Center(
               child: ElevatedButton(
-                  onPressed: ()async => await ProductControllers().postProduct(
-                    name: _name,
-                    selling_price: _selling_price,
-                    total_purchase: _total_purchase,
-                    product_stock:  _product_stock,
-                    category:  encap,
-                    imagePick: _image
-                  ),           
-                  child: Icon(Icons.send)
-                  ),
+                  onPressed: () async => await ProductControllers().postProduct(
+                        name: _name,
+                        selling_price: _selling_price,
+                        total_purchase: _total_purchase,
+                        product_stock: _product_stock,
+                        category: encap,
+                        imagePick: _image,
+                        // profit: double.parse(_selling_price.text) -
+                        //     double.parse(_total_purchase.text),
+                      ),
+                  child: Icon(Icons.send)),
             )
           ],
         ),

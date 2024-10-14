@@ -48,6 +48,7 @@ class _AddProductState extends State<AddProduct> {
   bool quantityError = false;
   bool categoryError = false;
   bool encapError = false;
+  bool profitError = false;
 
   void _validateAndSubmit() {
     setState(() {
@@ -55,29 +56,50 @@ class _AddProductState extends State<AddProduct> {
       sellingError = sellingPriceTextField.text.isEmpty;
       purchaseError = totalPurchaseTextField.text.isEmpty;
       quantityError = quantityTextField.text.isEmpty;
-      encapError = (encap == null) ? false : true;
+      encapError = encap.text?.isEmpty ?? true;
+      profitError = (double.parse(sellingPriceTextField.text) <=
+              double.parse(totalPurchaseTextField.text))
+          ? true
+          : false;
     });
 
-    if (!productNameError &&
-        !sellingError &&
-        !purchaseError &&
-        !quantityError &&
-        !encapError) {
-      showConfirmationDialog(context);
-    } else {
+    if (profitError) {
       toastification.show(
         context: context,
         title: Text(
-          'Validation Error',
+          'No Profit',
           style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
         ),
-        description: Text('Please fill out all fields.'),
+        description:
+            Text('Selling price must be greater than the purchase price.'),
         borderRadius: BorderRadius.circular(10),
         icon: Icon(Icons.error_outline, color: Colors.red),
         type: ToastificationType.error,
         style: ToastificationStyle.flatColored,
         autoCloseDuration: const Duration(seconds: 5),
       );
+    } else {
+      if (!productNameError &&
+          !sellingError &&
+          !purchaseError &&
+          !quantityError &&
+          !encapError) {
+        showConfirmationDialog(context);
+      } else {
+        toastification.show(
+          context: context,
+          title: Text(
+            'Validation Error',
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
+          ),
+          description: Text('Please fill out all fields.'),
+          borderRadius: BorderRadius.circular(10),
+          icon: Icon(Icons.error_outline, color: Colors.red),
+          type: ToastificationType.error,
+          style: ToastificationStyle.flatColored,
+          autoCloseDuration: const Duration(seconds: 5),
+        );
+      }
     }
   }
 
@@ -116,12 +138,15 @@ class _AddProductState extends State<AddProduct> {
                       onPressed: () async {
                         await ProductControllers()
                             .postProduct(
-                                name: productNameTextField,
-                                selling_price: sellingPriceTextField,
-                                total_purchase: totalPurchaseTextField,
-                                product_stock: quantityTextField,
-                                category: encap,
-                                imagePick: _image)
+                          name: productNameTextField,
+                          selling_price: sellingPriceTextField,
+                          total_purchase: totalPurchaseTextField,
+                          product_stock: quantityTextField,
+                          category: encap,
+                          imagePick: _image,
+                          // profit: double.parse(sellingPriceTextField.text) -
+                          //     double.parse(totalPurchaseTextField.text),
+                        )
                             .then((value) {
                           toastification.show(
                             context: context,
@@ -201,15 +226,18 @@ class _AddProductState extends State<AddProduct> {
                         label: 'Selling Price',
                         hintText: "Enter the product's price",
                         controllerTextField: sellingPriceTextField,
-                        borderColor: sellingError ? Colors.red : Colors.black26,
+                        borderColor: (sellingError || profitError)
+                            ? Colors.red
+                            : Colors.black26,
                       ),
                       const SizedBox(height: 15),
                       InputFields(
                         label: 'Total Purchase',
                         hintText: 'Enter the purchasing price',
                         controllerTextField: totalPurchaseTextField,
-                        borderColor:
-                            purchaseError ? Colors.red : Colors.black26,
+                        borderColor: (purchaseError || profitError)
+                            ? Colors.red
+                            : Colors.black26,
                       ),
                       const SizedBox(height: 15),
                       InputFields(
