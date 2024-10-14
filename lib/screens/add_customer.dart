@@ -137,59 +137,64 @@ class _AddCustomerState extends State<AddCustomer> {
     return Scaffold(
       appBar: const CustomAppBar(title: "Add Customer"),
       drawer: const AppDrawer(),
-      body: Column(
-        children: [
-          const Padding(
-            padding: EdgeInsets.all(16.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                BackButtonComponent(),
-                Spacer(),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  InputFields(
-                    label: 'Name',
-                    hintText: 'Name of the Customer',
-                    controllerTextField: customerNameTextField,
-                    borderColor: _nameError ? Colors.red : Colors.black26,
-                  ),
-                  const SizedBox(height: 15),
-                  InputFields(
-                    label: 'Address',
-                    hintText: 'Address of the Customer',
-                    controllerTextField: customerAddressTextField,
-                    borderColor: _addressError ? Colors.red : Colors.black26,
-                  ),
-                  const SizedBox(height: 15),
-                  InputFields(
-                    label: 'Phone Number',
-                    hintText: 'Phone Number of the Customer',
-                    controllerTextField: customerPhoneTextField,
-                    borderColor: _phoneError ? Colors.red : Colors.black26,
-                  ),
-                  const SizedBox(height: 25),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 90.0),
-                    child: Center(
-                      child: CustomButton(
-                        onPressed: _validateAndSubmit,
-                        text: 'Add Customer',
-                      ),
-                    ),
-                  ),
-                ],
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              const Padding(
+                padding: EdgeInsets.all(16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    BackButtonComponent(),
+                    Spacer(),
+                  ],
+                ),
               ),
-            ),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      InputFields(
+                        label: 'Name',
+                        hintText: 'Name of the Customer',
+                        controllerTextField: customerNameTextField,
+                        borderColor: _nameError ? Colors.red : Colors.black26,
+                      ),
+                      const SizedBox(height: 15),
+                      InputFields(
+                        label: 'Address',
+                        hintText: 'Address of the Customer',
+                        controllerTextField: customerAddressTextField,
+                        borderColor:
+                            _addressError ? Colors.red : Colors.black26,
+                      ),
+                      const SizedBox(height: 15),
+                      InputFields(
+                        label: 'Phone Number',
+                        hintText: 'Phone Number of the Customer',
+                        controllerTextField: customerPhoneTextField,
+                        borderColor: _phoneError ? Colors.red : Colors.black26,
+                      ),
+                      const SizedBox(height: 25),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 90.0),
+                        child: Center(
+                          child: CustomButton(
+                            onPressed: _validateAndSubmit,
+                            text: 'Add Customer',
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
