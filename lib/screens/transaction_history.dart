@@ -5,7 +5,6 @@ import 'package:commerce_mobile/components/search_field_component.dart';
 import 'package:commerce_mobile/components/transaction_item.dart';
 import 'package:commerce_mobile/controllers/Transaction_Contorller.dart';
 import 'package:commerce_mobile/models/TransactionsModel.dart';
-import 'package:commerce_mobile/seeders/transaction_seeder.dart';
 import 'package:flutter/material.dart';
 
 class TransactionHistory extends StatefulWidget {

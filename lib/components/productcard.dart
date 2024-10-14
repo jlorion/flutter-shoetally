@@ -3,6 +3,7 @@ import 'package:commerce_mobile/screens/edit_product.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+// ignore: must_be_immutable
 class ProductCard extends StatefulWidget {
   ProductCard({
     super.key,

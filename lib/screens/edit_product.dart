@@ -63,8 +63,6 @@ class _EditProductState extends State<EditProduct> {
   TextEditingController quantityTextField = TextEditingController();
   Encapsulation categoryTextField = Encapsulation();
 
-  // Add file variable to store selected file
-  String? _selectedFile;
 
   // Function to handle file picking
   Future<void> _validation(StorageService storageService) async {
@@ -73,49 +71,120 @@ class _EditProductState extends State<EditProduct> {
       sellingError = sellingPriceTextField.text.isEmpty;
       purchaseError = totalPurchaseTextField.text.isEmpty;
       quantityError = quantityTextField.text.isEmpty;
-      categoryError= categoryTextField.text?.isEmpty??true;
+      categoryError = categoryTextField.text?.isEmpty ?? true;
     });
 
-    if (!productNameError && 
-        !sellingError && 
+    if (!productNameError &&
+        !sellingError &&
         !purchaseError &&
         !quantityError &&
         !categoryError) {
-    //submit
-    String finalImage;
-    if (_image != null) {
-      finalImage = await storageService.updloadImage(_image);
-      storageService.deleteImage(preImage);
+      //submit
+      String finalImage;
+      if (_image != null) {
+        finalImage = await storageService.updloadImage(_image);
+        storageService.deleteImage(preImage);
+      } else {
+        finalImage = preImage;
+      }
+      await showConfirmationUpdateDialog(context, finalImage);
+      Navigator.pop(context);
     } else {
-      finalImage = preImage;
-    }
-    await ProductControllers().updateProduct(Product(
-      id: stringid,
-      name: productNameTextField.text,
-      selling_price: double.parse(sellingPriceTextField.text),
-      total_purchase: double.parse(totalPurchaseTextField.text),
-      product_stock: int.parse(quantityTextField.text),
-      category: categoryTextField.text ?? 'shoes',
-      image: finalImage,
-    ));
-    Navigator.pop(context);
-    
-    }else{
       toastification.show(
-          context: context,
-          title: Text(
-            'Validation Error',
-            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
-          ),
-          description: Text('Please fill out all fields.'),
-          borderRadius: BorderRadius.circular(10),
-          icon: Icon(Icons.error_outline, color: Colors.red),
-          type: ToastificationType.error,
-          style: ToastificationStyle.flatColored,
-          autoCloseDuration: const Duration(seconds: 5),
-        );
+        context: context,
+        title: Text(
+          'Validation Error',
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
+        ),
+        description: Text('Please fill out all fields.'),
+        borderRadius: BorderRadius.circular(10),
+        icon: Icon(Icons.error_outline, color: Colors.red),
+        type: ToastificationType.error,
+        style: ToastificationStyle.flatColored,
+        autoCloseDuration: const Duration(seconds: 5),
+      );
     }
+  }
 
+  Future<void> showConfirmationUpdateDialog(
+      BuildContext context, String finalImage) {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible:
+          false, // Prevents closing the dialog by tapping outside
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10), // Customize border radius
+          ),
+          child: Container(
+            padding: EdgeInsets.all(20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Text(
+                  'Confirmation',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 16),
+                Text('Are you sure you want to update this transaction?'),
+                SizedBox(height: 24),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    TextButton(
+                        child: Text('Cancel'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        }),
+                    SizedBox(width: 8),
+                    TextButton(
+                      child: Text('Update'),
+                      onPressed: () async {
+                        await ProductControllers()
+                            .updateProduct(Product(
+                          id: stringid,
+                          name: productNameTextField.text,
+                          selling_price:
+                              double.parse(sellingPriceTextField.text),
+                          total_purchase:
+                              double.parse(totalPurchaseTextField.text),
+                          product_stock: int.parse(quantityTextField.text),
+                          category: categoryTextField.text ?? 'shoes',
+                          image: finalImage,
+                        ))
+                            .then((value) {
+                          toastification.show(
+                            context: context,
+                            title: Text(
+                              'Product Updated Successfully!',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.green[900]),
+                            ),
+                            description:
+                                Text('You successfully updated a product.'),
+                            borderRadius: BorderRadius.circular(10),
+                            icon: Icon(
+                              Icons.check_circle_outline,
+                              color: Colors.green[900],
+                            ),
+                            type: ToastificationType.success,
+                            style: ToastificationStyle.flatColored,
+                            autoCloseDuration: const Duration(seconds: 5),
+                          );
+                          Navigator.pushNamed(context, '/products');
+                        });
+                      },
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 
   @override

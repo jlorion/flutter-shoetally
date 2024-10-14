@@ -7,7 +7,6 @@ import 'package:commerce_mobile/components/order_item.dart';
 import 'package:commerce_mobile/components/search_component.dart';
 import 'package:commerce_mobile/controllers/Product_Controllers.dart';
 import 'package:commerce_mobile/models/ProductsModel.dart';
-import 'package:commerce_mobile/seeders/product_seeder.dart';
 import 'package:flutter/material.dart';
 import 'package:toastification/toastification.dart';
 

@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../components/app_drawer.dart';
-import '../components/appbar.dart';
 
 class TransactionDetails extends StatefulWidget {
   const TransactionDetails({super.key});

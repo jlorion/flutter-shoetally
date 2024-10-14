@@ -42,8 +42,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
       if (profile != null) {
         setState(() {
           userProfile = profile;
-          nameTextField.text = profile.name ?? ''; // Set name to text field
-          emailTextField.text = profile.email ?? ''; // Set email to text field
+          nameTextField.text = profile.name; // Set name to text field
+          emailTextField.text = profile.email; // Set email to text field
         });
       }
     }
@@ -149,7 +149,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           );
 
                           await AuthFunctions().signOut();
-                          User? user = await AuthFunctions().getCurrentUser();
 
                           Navigator.of(context).pushNamedAndRemoveUntil(
                             '/login',
