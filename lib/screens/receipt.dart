@@ -1,5 +1,6 @@
 import 'package:commerce_mobile/components/back_button_component.dart';
 import 'package:commerce_mobile/components/custom_button.dart';
+import 'package:commerce_mobile/models/TransactionsModel.dart';
 import 'package:commerce_mobile/screens/dashboard.dart';
 import 'package:commerce_mobile/screens/orders.dart';
 import 'package:flutter/foundation.dart';
@@ -9,8 +10,9 @@ import 'package:google_fonts/google_fonts.dart';
 class Receipt extends StatefulWidget {
   final stringId;
   final total_amount;
+  final Transactions trans;
   const Receipt(
-      {super.key, required this.stringId, required this.total_amount});
+      {super.key, required this.stringId, required this.total_amount, required this.trans});
 
   @override
   State<Receipt> createState() => _ReceiptState();
@@ -191,10 +193,10 @@ class _ReceiptState extends State<Receipt> {
                                     'Reference Number', widget.stringId, 15),
                                 const SizedBox(height: 15),
                                 receiptTextDetail(
-                                    'Date', DateTime.now().toString(), 15),
+                                    'Date', widget.trans.date_time.split(" ")[0], 15),
                                 const SizedBox(height: 15),
                                 receiptTextDetail(
-                                    'Time', TimeOfDay.now().toString(), 15),
+                                    'Time', widget.trans.date_time.split(" ")[1], 15),
                                 const SizedBox(height: 15),
                                 receiptTextDetail(
                                     'Payment Method', 'Credit Card', 15),

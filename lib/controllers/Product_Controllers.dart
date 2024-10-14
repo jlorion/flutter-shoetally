@@ -50,6 +50,13 @@ class ProductControllers {
             Product.fromFireStore(doc.data() as Map<String, dynamic>, doc.id))
         .toList();
   }
+  Future<void> updateProductStock(String id, int newStock)async{
+    DocumentReference docref = await ref.doc(id);
+    docref.update({
+      'product_stock': newStock
+    });
+
+  }
 }
 
 // () async {

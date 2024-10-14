@@ -1,42 +1,16 @@
 import 'dart:io';
-
-import 'dart:io';
-
-import 'dart:io';
-
 import 'package:commerce_mobile/components/app_drawer.dart';
 import 'package:commerce_mobile/components/appbar.dart';
 import 'package:commerce_mobile/components/back_button_component.dart';
 import 'package:commerce_mobile/components/custom_button.dart';
 import 'package:commerce_mobile/components/dropdownbuttonform.dart';
 import 'package:commerce_mobile/components/encapsulation.dart';
-import 'package:commerce_mobile/components/encapsulation.dart';
-import 'package:commerce_mobile/components/encapsulation.dart';
-import 'package:commerce_mobile/components/encapsulation.dart';
 import 'package:commerce_mobile/components/inputfields.dart';
 import 'package:commerce_mobile/controllers/Product_Controllers.dart';
 import 'package:commerce_mobile/models/ProductsModel.dart';
 import 'package:commerce_mobile/services/storage_service.dart';
 import 'package:flutter/foundation.dart';
-import 'package:commerce_mobile/controllers/Product_Controllers.dart';
-import 'package:commerce_mobile/models/ProductsModel.dart';
-import 'package:commerce_mobile/services/storage_service.dart';
-import 'package:flutter/foundation.dart';
-import 'package:commerce_mobile/controllers/Product_Controllers.dart';
-import 'package:commerce_mobile/models/ProductsModel.dart';
-import 'package:commerce_mobile/services/storage_service.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:file_picker/file_picker.dart'; // Import file_picker
-import 'package:dotted_border/dotted_border.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:provider/provider.dart'; // Import dotted_border
-import 'package:dotted_border/dotted_border.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:provider/provider.dart'; // Import dotted_border
-import 'package:dotted_border/dotted_border.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:provider/provider.dart'; // Import dotted_border
 import 'package:dotted_border/dotted_border.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -70,7 +44,6 @@ class _EditProductState extends State<EditProduct> {
     '${widget.filteredTransactions[widget.index].category}';
     preImage = widget.filteredTransactions[widget.index].image;
     stringid = widget.filteredTransactions[widget.index].id;
-
     super.initState();
   }
 
@@ -79,7 +52,6 @@ class _EditProductState extends State<EditProduct> {
   bool purchaseError = false;
   bool quantityError = false;
   bool categoryError = false;
-  bool encapError = false;
 
   XFile? _image;
   String preImage = '';
@@ -95,6 +67,56 @@ class _EditProductState extends State<EditProduct> {
   String? _selectedFile;
 
   // Function to handle file picking
+  Future<void> _validation(StorageService storageService) async {
+    setState(() {
+      productNameError = productNameTextField.text.isEmpty;
+      sellingError = sellingPriceTextField.text.isEmpty;
+      purchaseError = totalPurchaseTextField.text.isEmpty;
+      quantityError = quantityTextField.text.isEmpty;
+      categoryError= categoryTextField.text?.isEmpty??true;
+    });
+
+    if (!productNameError && 
+        !sellingError && 
+        !purchaseError &&
+        !quantityError &&
+        !categoryError) {
+    //submit
+    String finalImage;
+    if (_image != null) {
+      finalImage = await storageService.updloadImage(_image);
+      storageService.deleteImage(preImage);
+    } else {
+      finalImage = preImage;
+    }
+    await ProductControllers().updateProduct(Product(
+      id: stringid,
+      name: productNameTextField.text,
+      selling_price: double.parse(sellingPriceTextField.text),
+      total_purchase: double.parse(totalPurchaseTextField.text),
+      product_stock: int.parse(quantityTextField.text),
+      category: categoryTextField.text ?? 'shoes',
+      image: finalImage,
+    ));
+    Navigator.pop(context);
+    
+    }else{
+      toastification.show(
+          context: context,
+          title: Text(
+            'Validation Error',
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
+          ),
+          description: Text('Please fill out all fields.'),
+          borderRadius: BorderRadius.circular(10),
+          icon: Icon(Icons.error_outline, color: Colors.red),
+          type: ToastificationType.error,
+          style: ToastificationStyle.flatColored,
+          autoCloseDuration: const Duration(seconds: 5),
+        );
+    }
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -208,31 +230,7 @@ class _EditProductState extends State<EditProduct> {
                         padding: const EdgeInsets.symmetric(horizontal: 60.0),
                         child: Center(
                           child: CustomButton(
-                            onPressed: () async {
-                              String finalImage;
-                              if (_image != null) {
-                                finalImage =
-                                    await storageService.updloadImage(_image);
-                                storageService.deleteImage(preImage);
-                              } else {
-                                finalImage = preImage;
-                              }
-                              await ProductControllers().updateProduct(Product(
-                                id: stringid,
-                                name: productNameTextField.text,
-                                selling_price:
-                                    double.parse(sellingPriceTextField.text),
-                                total_purchase:
-                                    double.parse(totalPurchaseTextField.text),
-                                product_stock:
-                                    int.parse(quantityTextField.text),
-                                category: categoryTextField.text ?? 'shoes',
-                                image: finalImage,
-                                // profit: double.parse(
-                                //         sellingPriceTextField.text) -
-                                //     double.parse(totalPurchaseTextField.text),
-                              ));
-                            },
+                            onPressed: () => _validation(storageService),
                             text: 'Edit Product',
                           ),
                         ),

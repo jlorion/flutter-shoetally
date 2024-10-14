@@ -197,7 +197,7 @@ class _TransactionDetailsState extends State<TransactionDetails> {
                                     .map((order) => productsListTextDetail(
                                         order.quantity.toString(),
                                         order.product_name,
-                                        order.total_price.toStringAsFixed(2),
+                                        (order.total_price * order.quantity).toStringAsFixed(2),
                                         12))
                                     .toList())
                             // Add more items here if needed

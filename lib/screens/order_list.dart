@@ -7,6 +7,7 @@ import 'package:commerce_mobile/components/dropdownbuttonform.dart';
 import 'package:commerce_mobile/components/encapsulation.dart';
 import 'package:commerce_mobile/components/navbar.dart';
 import 'package:commerce_mobile/components/current_order.dart';
+import 'package:commerce_mobile/controllers/Product_Controllers.dart';
 import 'package:commerce_mobile/controllers/Transaction_Contorller.dart';
 import 'package:commerce_mobile/controllers/customerController.dart';
 import 'package:commerce_mobile/models/CustomersModel.dart';
@@ -80,9 +81,10 @@ class _OrderListPageState extends State<OrderListPage> {
   }
 
   void _increaseQuantity(int index) {
-    if (_orders[index]['quantity'] < _orders[index]['stock']) {
+    if (_orders[index]['stock']> 0) {
       setState(() {
         _orders[index]['quantity'] += 1;
+        _orders[index]['stock'] -= 1;
       });
     }
   }
@@ -91,6 +93,7 @@ class _OrderListPageState extends State<OrderListPage> {
     setState(() {
       if (_orders[index]['quantity'] > 1) {
         _orders[index]['quantity'] -= 1;
+        _orders[index]['stock'] += 1;
       }
     });
   }
@@ -122,33 +125,6 @@ class _OrderListPageState extends State<OrderListPage> {
         style: ToastificationStyle.flatColored,
         autoCloseDuration: const Duration(seconds: 5),
       );
-    }
-  }
-
-  Future<void> updateProductQuantities() async {
-    for (var order in _orders) {
-      String productId = order['productId'];
-      int quantitySold = order['quantity'];
-
-      DocumentReference productRef =
-          FirebaseFirestore.instance.collection('products').doc(productId);
-
-      await FirebaseFirestore.instance.runTransaction((transaction) async {
-        DocumentSnapshot snapshot = await transaction.get(productRef);
-
-        if (!snapshot.exists) {
-          throw Exception("Product does not exist!");
-        }
-
-        int currentStock = snapshot['product_stock'];
-        if (currentStock < quantitySold) {
-          throw Exception("Not enough stock!");
-        }
-
-        int newStock = currentStock - quantitySold;
-
-        transaction.update(productRef, {'product_stock': newStock});
-      });
     }
   }
 
@@ -209,14 +185,18 @@ class _OrderListPageState extends State<OrderListPage> {
                             .addTransaction(trans, finalOrders);
 
                         // Update product quantities after successful transaction
-                        await updateProductQuantities();
+                        for (var orders in _orders) {
+                          print(orders['stock'].toString() + "--- this is the stock");
+                          print(orders['quantity'].toString());
+                          await ProductControllers().updateProductStock(orders["productId"], orders['stock']);
+                        }
 
                         double finalVal = _getTotal();
                         Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) =>
-                                Receipt(stringId: id, total_amount: finalVal),
+                                Receipt(stringId: id, total_amount: finalVal, trans: trans,),
                           ),
                         );
                       },
@@ -253,7 +233,7 @@ class _OrderListPageState extends State<OrderListPage> {
                   'price': product.selling_price,
                   'profit': product.profit, // Include profit here
                   'quantity': 1,
-                  'stock': product.product_stock
+                  'stock': product.product_stock - 1
                 })
             .toList();
       });
@@ -290,7 +270,7 @@ class _OrderListPageState extends State<OrderListPage> {
                   return CurrentOrder(
                     imageUrl: order['imageUrl'],
                     productName: order['productName'],
-                    productId: order['productId'].toString(), // Fix here
+                    productId: order['stock'].toString(), // Fix here
                     price: order['price'],
                     quantity: order['quantity'],
                     onIncrease: () => _increaseQuantity(index),
